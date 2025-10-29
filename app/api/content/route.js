@@ -72,12 +72,31 @@ const configureGitRemote = async () => {
   if (!currentUrl.startsWith('https://')) return;
   if (!token) return;
 
-  const encodedToken = encodeURIComponent(token);
-  const tokenPrefix = `https://${encodedToken}@`;
+  const username =
+    process.env.GIT_PUSH_USERNAME ||
+    process.env.GIT_COMMIT_USER ||
+    process.env.GIT_USER ||
+    'x-access-token';
 
-  if (currentUrl.startsWith(tokenPrefix)) return;
+  let authenticatedUrl;
+  try {
+    const parsed = new URL(currentUrl);
 
-  const authenticatedUrl = currentUrl.replace('https://', tokenPrefix);
+    if (parsed.username === username && parsed.password === token) {
+      return;
+    }
+
+    parsed.username = username;
+    parsed.password = token;
+    authenticatedUrl = parsed.toString();
+  } catch {
+    const encodedUser = encodeURIComponent(username);
+    const encodedToken = encodeURIComponent(token);
+    const tokenPrefix = `https://${encodedUser}:${encodedToken}@`;
+    if (currentUrl.startsWith(tokenPrefix)) return;
+    authenticatedUrl = currentUrl.replace('https://', tokenPrefix);
+  }
+
   await runGit(['remote', 'set-url', defaultRemote, authenticatedUrl]);
 };
 
