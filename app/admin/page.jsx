@@ -24,9 +24,12 @@ function GalleryManager({
   dataset,
   fields = ['title', 'caption'],
   showLink = false,
+  commitOptions,
 }) {
   const [draft, setDraft] = useState(dataset.items);
   const [newItem, setNewItem] = useState({ image: '', title: '', caption: '', href: '' });
+  const [saving, setSaving] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     setDraft(dataset.items);
@@ -71,8 +74,24 @@ function GalleryManager({
     });
   };
 
-  const persistAll = () => {
-    dataset.setItems(draft);
+  const persistAll = async () => {
+    if (!hasChanges || saving) return;
+    setSaving(true);
+    setFeedback({ type: 'info', message: 'Saving changes...' });
+    try {
+      const result = await dataset.setItems(draft, commitOptions);
+      setFeedback({
+        type: 'success',
+        message: result?.message || 'Content synced and committed.',
+      });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: error?.message || 'Update failed, please try again later.',
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const resetDraft = () => {
@@ -105,14 +124,14 @@ function GalleryManager({
           <h2 className="text-lg font-semibold text-accent">{title}</h2>
           <p className="text-sm text-accent/70">{description}</p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           <button
             type="button"
             onClick={persistAll}
-            disabled={!hasChanges}
+            disabled={!hasChanges || saving}
             className="rounded-full bg-accent px-4 py-2 font-semibold uppercase tracking-[0.35em] text-white transition disabled:cursor-not-allowed disabled:bg-accent/30"
           >
-            儲存變更
+            {saving ? '同步中…' : '套用變更'}
           </button>
           <button
             type="button"
@@ -128,6 +147,19 @@ function GalleryManager({
           >
             回復預設
           </button>
+          {feedback?.message && (
+            <span
+              className={`text-[0.65rem] font-medium tracking-[0.2em] ${
+                feedback.type === 'error'
+                  ? 'text-red-500'
+                  : feedback.type === 'success'
+                  ? 'text-brand'
+                  : 'text-accent/50'
+              }`}
+            >
+              {feedback.message}
+            </span>
+          )}
         </div>
       </div>
 
@@ -212,7 +244,7 @@ function GalleryManager({
                   </label>
                 )}
               </div>
-              <div className="flex flex-wrap gap-2 text-xs">
+              <div className="flex flex-wrap items-center gap-3 text-xs">
                 <button
                   type="button"
                   onClick={() => moveItem(index, -1)}
@@ -323,9 +355,11 @@ function GalleryManager({
   );
 }
 
-function ProfileEditor({ dataset }) {
+function ProfileEditor({ dataset, commitOptions }) {
   const [draft, setDraft] = useState(dataset.items);
   const [linkDraft, setLinkDraft] = useState(dataset.items?.links || []);
+  const [saving, setSaving] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     setDraft(dataset.items);
@@ -363,9 +397,25 @@ function ProfileEditor({ dataset }) {
     setLinkDraft((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
   };
 
-  const persist = () => {
+  const persist = async () => {
     const next = { ...draft, links: linkDraft };
-    dataset.setItems(next);
+    if (!hasChanges || saving) return;
+    setSaving(true);
+    setFeedback({ type: 'info', message: 'Saving profile...' });
+    try {
+      const result = await dataset.setItems(next, commitOptions);
+      setFeedback({
+        type: 'success',
+        message: result?.message || 'Profile synced and committed.',
+      });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: error?.message || 'Update failed, please try again later.',
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const resetDraft = () => {
@@ -393,14 +443,14 @@ function ProfileEditor({ dataset }) {
           <h2 className="text-lg font-semibold text-accent">About / Profile</h2>
           <p className="text-sm text-accent/70">管理頭像、簡介、聯絡資料與外部連結。</p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           <button
             type="button"
             onClick={persist}
-            disabled={!hasChanges}
+            disabled={!hasChanges || saving}
             className="rounded-full bg-accent px-4 py-2 font-semibold uppercase tracking-[0.35em] text-white transition disabled:cursor-not-allowed disabled:bg-accent/30"
           >
-            儲存變更
+            {saving ? '同步中…' : '套用變更'}
           </button>
           <button
             type="button"
@@ -416,6 +466,13 @@ function ProfileEditor({ dataset }) {
           >
             回復預設
           </button>
+          {feedback?.message && (
+            <span
+              className={`text-[0.65rem] font-medium tracking-[0.2em] ${feedback.type === 'error' ? 'text-red-500' : feedback.type === 'success' ? 'text-brand' : 'text-accent/50'}`}
+            >
+              {feedback.message}
+            </span>
+          )}
         </div>
       </div>
 
@@ -547,6 +604,49 @@ export default function AdminPage() {
   const work = useEditableData('workItems', defaultWork);
   const profile = useEditableData('profileData', defaultProfile, 'object');
 
+  const [authToken, setAuthToken] = useState('');
+  const [commitMessage, setCommitMessage] = useState('');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const storedToken = window.localStorage.getItem('adminApiToken');
+      const storedMessage = window.localStorage.getItem('adminCommitMessage');
+      if (storedToken) setAuthToken(storedToken);
+      if (storedMessage) setCommitMessage(storedMessage);
+    } catch (error) {
+      console.warn('Failed to load admin defaults', error);
+    }
+  }, []);
+
+  const handleTokenChange = (value) => {
+    setAuthToken(value);
+    if (typeof window === 'undefined') return;
+    if (value) {
+      window.localStorage.setItem('adminApiToken', value);
+    } else {
+      window.localStorage.removeItem('adminApiToken');
+    }
+  };
+
+  const handleCommitMessageChange = (value) => {
+    setCommitMessage(value);
+    if (typeof window === 'undefined') return;
+    if (value) {
+      window.localStorage.setItem('adminCommitMessage', value);
+    } else {
+      window.localStorage.removeItem('adminCommitMessage');
+    }
+  };
+
+  const commitOptions = {
+    token: authToken || undefined,
+    commitMessage,
+  };
+
+  const hasToken = Boolean(authToken.trim());
+
+
   return (
     <div className="space-y-8 pb-20">
       <PageHeader
@@ -554,20 +654,62 @@ export default function AdminPage() {
         subtitle="這裡不會出現在導航列。所有調整都會寫入瀏覽器的 localStorage，重新整理即可看到公開頁面更新。若要部署到 GitHub Pages，請在儲存後匯出資料並更新資料檔。"
       />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5">
+        <div className="rounded-3xl border border-soft/70 bg-white p-6 shadow-sm">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-accent/60">部署設定</h3>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-accent/60">
+              API Token
+              <input
+                type="password"
+                value={authToken}
+                onChange={(event) => handleTokenChange(event.target.value)}
+                placeholder="ADMIN_API_TOKEN"
+                className="rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+              />
+              <span className="text-[0.65rem] uppercase tracking-[0.3em] text-accent/40">
+                儲存在瀏覽器 localStorage，僅用於呼叫 /api/content。
+              </span>
+            </label>
+            <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-accent/60">
+              Commit Message
+              <input
+                value={commitMessage}
+                onChange={(event) => handleCommitMessageChange(event.target.value)}
+                placeholder="chore: update site content"
+                className="rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+              />
+              <span className="text-[0.65rem] uppercase tracking-[0.3em] text-accent/40">
+                留空會使用預設訊息。
+              </span>
+            </label>
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-[0.65rem] uppercase tracking-[0.3em]">
+            <span
+              className={`rounded-full border px-3 py-1 ${
+                hasToken ? 'border-brand/40 text-brand' : 'border-red-200 text-red-500'
+              }`}
+            >
+              {hasToken ? 'Token Ready' : 'Token Missing'}
+            </span>
+            <span className="text-accent/40">需要與伺服器環境變數 ADMIN_API_TOKEN 保持一致。</span>
+          </div>
+        </div>
         <div className="rounded-3xl border border-dashed border-brand/40 bg-brand/5 p-6 text-sm leading-relaxed text-accent/80">
-          <p>📌 說明：</p>
+          <p className="font-semibold text-accent">同步流程</p>
           <ul className="mt-3 list-disc space-y-2 pl-5">
-            <li>「儲存變更」會將調整寫入 localStorage，公開頁面讀取時會自動套用。</li>
-            <li>若要備份資料，可在瀏覽器開發者工具中查看對應的 JSON，再貼回 <code>data/</code> 資料夾。</li>
-            <li>上傳圖片會自動轉成 data URL，適合快速預覽。若要長期使用，建議將圖片加入專案的 <code>public/images</code> 後再提供路徑。</li>
+            <li>按下「套用變更」後會呼叫 /api/content，寫入 data/*.js 並執行 git add + commit。</li>
+            <li>API 會依序 git push 到 CONTENT_UPDATE_REMOTE / CONTENT_UPDATE_BRANCH（預設 origin/main）。</li>
+            <li>若指令失敗會回傳錯誤訊息，請檢查 Token、遠端權限或儲存路徑。</li>
           </ul>
         </div>
         <GalleryManager
+          commitOptions={commitOptions}
           title="Pixilart 首頁作品"
           description="管理像素插畫與 GIF，保留原有的首頁動畫與排版。"
           dataset={pixilart}
         />
         <GalleryManager
+          commitOptions={commitOptions}
           title="Work 作品集"
           description="管理案例如需連結至原始文章，可設定標題、說明與外部連結。"
           dataset={work}
@@ -575,18 +717,20 @@ export default function AdminPage() {
           showLink
         />
         <GalleryManager
+          commitOptions={commitOptions}
           title="Art 插畫集"
           description="新增或刪除插畫圖像，維持大量作品瀑布流展示。"
           dataset={art}
           fields={['caption']}
         />
         <GalleryManager
+          commitOptions={commitOptions}
           title="Type 字體排版"
           description="更新字體實驗作品，適合使用 2 欄排版。"
           dataset={type}
           fields={['caption']}
         />
-        <ProfileEditor dataset={profile} />
+        <ProfileEditor dataset={profile} commitOptions={commitOptions} />
       </div>
     </div>
   );
