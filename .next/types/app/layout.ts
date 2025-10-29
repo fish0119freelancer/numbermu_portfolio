@@ -1,4 +1,4 @@
-// File: /Users/Timmyfish/Desktop/接案/作品集網站/numbermu_portfolio/app/layout.jsx
+// File: C:\Users\polop\Downloads\numbermu_portfolio\app\layout.jsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
