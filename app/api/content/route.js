@@ -37,6 +37,36 @@ const runGit = async (args) => {
   }
 };
 
+const configureGitIdentity = async () => {
+  const name = process.env.GIT_COMMIT_USER;
+  const email = process.env.GIT_COMMIT_EMAIL;
+
+  if (name) {
+    await runGit(['config', 'user.name', name]);
+  }
+  if (email) {
+    await runGit(['config', 'user.email', email]);
+  }
+};
+
+const configureGitRemote = async () => {
+  const token = process.env.GIT_PUSH_TOKEN;
+  if (!token) return;
+
+  const { stdout } = await runGit(['remote', 'get-url', defaultRemote]);
+  const currentUrl = stdout.trim();
+
+  if (!currentUrl.startsWith('https://')) return;
+
+  const encodedToken = encodeURIComponent(token);
+  const tokenPrefix = `https://${encodedToken}@`;
+
+  if (currentUrl.startsWith(tokenPrefix)) return;
+
+  const authenticatedUrl = currentUrl.replace('https://', tokenPrefix);
+  await runGit(['remote', 'set-url', defaultRemote, authenticatedUrl]);
+};
+
 const writeDataModule = async ({ exportName, file }, value) => {
   const filePath = path.join(repoRoot, file);
   const contents = formatModule(exportName, value);
@@ -100,6 +130,8 @@ export async function POST(request) {
       await runGit(['add', file]);
     }
 
+    await configureGitIdentity();
+
     const commitMessage =
       typeof payload.commitMessage === 'string' && payload.commitMessage.trim()
         ? payload.commitMessage.trim()
@@ -117,6 +149,7 @@ export async function POST(request) {
       throw error;
     }
 
+    await configureGitRemote();
     await runGit(['push', defaultRemote, defaultBranch]);
 
     return NextResponse.json(
