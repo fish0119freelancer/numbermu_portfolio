@@ -197,6 +197,8 @@ export async function POST(request) {
     }
 
     await configureGitRemote(gitLogs);
+    let hookResponse;
+
     try {
       await runGit(['push', defaultRemote, `HEAD:${defaultBranch}`], gitLogs);
     } catch (error) {
@@ -209,8 +211,31 @@ export async function POST(request) {
       }
     }
 
+    const deployHook = process.env.RENDER_DEPLOY_HOOK_URL || process.env.DEPLOY_HOOK_URL;
+    if (deployHook) {
+      try {
+        const response = await fetch(deployHook, { method: 'POST' });
+        hookResponse = {
+          url: deployHook,
+          status: response.status,
+          ok: response.ok,
+        };
+      } catch (hookError) {
+        hookResponse = {
+          url: deployHook,
+          status: 'error',
+          error: hookError.message,
+        };
+      }
+    }
+
     return NextResponse.json(
-      { message: 'Content updated and pushed successfully', files: touchedFiles, gitLogs },
+      {
+        message: 'Content updated and pushed successfully',
+        files: touchedFiles,
+        gitLogs,
+        deployHook: hookResponse,
+      },
       { status: 200 },
     );
   } catch (error) {
