@@ -198,12 +198,12 @@ export async function POST(request) {
 
     await configureGitRemote(gitLogs);
     try {
-      await runGit(['push', defaultRemote, defaultBranch], gitLogs);
+      await runGit(['push', defaultRemote, `HEAD:${defaultBranch}`], gitLogs);
     } catch (error) {
       if (error.message.includes('fetch first') || error.message.includes('stale info')) {
         await runGit(['fetch', defaultRemote, defaultBranch], gitLogs);
         await runGit(['merge', '--ff-only', `${defaultRemote}/${defaultBranch}`], gitLogs);
-        await runGit(['push', defaultRemote, defaultBranch], gitLogs);
+        await runGit(['push', defaultRemote, `HEAD:${defaultBranch}`], gitLogs);
       } else {
         throw error;
       }
