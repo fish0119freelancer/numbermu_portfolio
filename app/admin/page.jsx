@@ -651,11 +651,11 @@ export default function AdminPage() {
     <div className="space-y-8 pb-20">
       <PageHeader
         title="Backstage"
-        subtitle="這裡不會出現在導航列。所有調整都會寫入瀏覽器的 localStorage，重新整理即可看到公開頁面更新。若要部署到 GitHub Pages，請在儲存後匯出資料並更新資料檔。"
+        subtitle="上傳圖片或更新文字後，請記得按「套用變更」同步到網站。"
       />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5">
         <div className="rounded-3xl border border-soft/70 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-accent/60">部署設定</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-accent/60">操作設定</h3>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-accent/60">
               API Token
@@ -667,7 +667,7 @@ export default function AdminPage() {
                 className="rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
               />
               <span className="text-[0.65rem] uppercase tracking-[0.3em] text-accent/40">
-                儲存在瀏覽器 localStorage，僅用於呼叫 /api/content。
+                Token 只會儲存在這台瀏覽器，換裝置時請重新輸入。
               </span>
             </label>
             <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-accent/60">
@@ -679,7 +679,7 @@ export default function AdminPage() {
                 className="rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
               />
               <span className="text-[0.65rem] uppercase tracking-[0.3em] text-accent/40">
-                留空會使用預設訊息。
+                可自訂備註，留空會使用預設訊息。
               </span>
             </label>
           </div>
@@ -691,15 +691,15 @@ export default function AdminPage() {
             >
               {hasToken ? 'Token Ready' : 'Token Missing'}
             </span>
-            <span className="text-accent/40">需要與伺服器環境變數 ADMIN_API_TOKEN 保持一致。</span>
+            <span className="text-accent/40">請確認欄位與伺服器的 ADMIN_API_TOKEN 相同。</span>
           </div>
         </div>
         <div className="rounded-3xl border border-dashed border-brand/40 bg-brand/5 p-6 text-sm leading-relaxed text-accent/80">
-          <p className="font-semibold text-accent">同步流程</p>
+          <p className="font-semibold text-accent">使用說明</p>
           <ul className="mt-3 list-disc space-y-2 pl-5">
-            <li>按下「套用變更」後會呼叫 /api/content，寫入 data/*.js 並執行 git add + commit。</li>
-            <li>API 會依序 git push 到 CONTENT_UPDATE_REMOTE / CONTENT_UPDATE_BRANCH（預設 origin/main）。</li>
-            <li>若指令失敗會回傳錯誤訊息，請檢查 Token、遠端權限或儲存路徑。</li>
+            <li>調整內容後，請按「套用變更」。</li>
+            <li>顯示成功訊息後約 1 分鐘，網站會自動更新。</li>
+            <li>若遇到錯誤或網站沒有變動，請再試一次或通知管理者。</li>
           </ul>
         </div>
         <GalleryManager

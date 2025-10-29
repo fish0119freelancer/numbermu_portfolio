@@ -9,7 +9,7 @@ export default function WorkPage() {
 
   return (
     <section className="section-wrapper">
-      <div className="entries" data-archive="default" data-layout="grid" data-cards="simple">
+      <div className="entries entries-work" data-archive="default" data-layout="grid" data-cards="simple">
         {list.map((item, index) => (
           <article className="entry-card card-content" key={`${item.image}-${index}`}>
             <a
@@ -37,3 +37,4 @@ export default function WorkPage() {
     </section>
   );
 }
+

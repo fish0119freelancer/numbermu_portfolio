@@ -198,7 +198,7 @@ main {
 .custom-slider {
   max-width: 1300px;
   height: 500px;
-  margin: 0 auto;
+  margin: 0 auto 120px;
   display: flex;
   align-items: flex-start;
   gap: 50px;
@@ -321,5 +321,20 @@ main {
   .thumbnail-strip {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     height: auto;
+  }
+}
+.entries-work {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .entries-work {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .entries-work {
+    grid-template-columns: 1fr;
   }
 }
