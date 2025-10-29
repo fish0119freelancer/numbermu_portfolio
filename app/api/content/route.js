@@ -197,7 +197,17 @@ export async function POST(request) {
     }
 
     await configureGitRemote(gitLogs);
-    await runGit(['push', defaultRemote, defaultBranch], gitLogs);
+    try {
+      await runGit(['push', defaultRemote, defaultBranch], gitLogs);
+    } catch (error) {
+      if (error.message.includes('fetch first') || error.message.includes('stale info')) {
+        await runGit(['fetch', defaultRemote, defaultBranch], gitLogs);
+        await runGit(['merge', '--ff-only', `${defaultRemote}/${defaultBranch}`], gitLogs);
+        await runGit(['push', defaultRemote, defaultBranch], gitLogs);
+      } else {
+        throw error;
+      }
+    }
 
     return NextResponse.json(
       { message: 'Content updated and pushed successfully', files: touchedFiles, gitLogs },
