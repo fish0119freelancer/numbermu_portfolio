@@ -47,12 +47,30 @@ const configureGitIdentity = async () => {
 
 const configureGitRemote = async () => {
   const token = process.env.GIT_PUSH_TOKEN;
-  if (!token) return;
+  const fallbackRemote = process.env.GIT_REMOTE_URL;
 
-  const { stdout } = await runGit(['remote', 'get-url', defaultRemote]);
-  const currentUrl = stdout.trim();
+  if (fallbackRemote) {
+    try {
+      await runGit(['remote', 'add', defaultRemote, fallbackRemote]);
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        throw error;
+      }
+    }
+  }
+
+  let currentUrl;
+  try {
+    const { stdout } = await runGit(['remote', 'get-url', defaultRemote]);
+    currentUrl = stdout.trim();
+  } catch (error) {
+    throw new Error(
+      `Missing git remote '${defaultRemote}'. Provide GIT_REMOTE_URL so the service can add one automatically.`,
+    );
+  }
 
   if (!currentUrl.startsWith('https://')) return;
+  if (!token) return;
 
   const encodedToken = encodeURIComponent(token);
   const tokenPrefix = `https://${encodedToken}@`;
