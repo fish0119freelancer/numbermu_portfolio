@@ -38,15 +38,11 @@ const runGit = async (args) => {
 };
 
 const configureGitIdentity = async () => {
-  const name = process.env.GIT_COMMIT_USER;
-  const email = process.env.GIT_COMMIT_EMAIL;
+  const name = process.env.GIT_COMMIT_USER || 'Render Content Bot';
+  const email = process.env.GIT_COMMIT_EMAIL || 'render-bot@example.com';
 
-  if (name) {
-    await runGit(['config', 'user.name', name]);
-  }
-  if (email) {
-    await runGit(['config', 'user.email', email]);
-  }
+  await runGit(['config', 'user.name', name]);
+  await runGit(['config', 'user.email', email]);
 };
 
 const configureGitRemote = async () => {
