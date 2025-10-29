@@ -28,30 +28,43 @@ const isValidKind = (value, kind) => {
 const formatModule = (exportName, value) =>
   `export const ${exportName} = ${JSON.stringify(value, null, 2)};\n`;
 
-const runGit = async (args) => {
+const runGit = async (args, logs) => {
   try {
-    return await execFileAsync('git', args, { cwd: repoRoot });
+    const result = await execFileAsync('git', args, { cwd: repoRoot });
+    logs?.push({
+      command: `git ${args.join(' ')}`,
+      stdout: result.stdout?.trim() || '',
+      stderr: result.stderr?.trim() || '',
+      success: true,
+    });
+    return result;
   } catch (error) {
     const stderr = error?.stderr?.trim() || error.message;
+    logs?.push({
+      command: `git ${args.join(' ')}`,
+      stdout: error?.stdout?.trim() || '',
+      stderr,
+      success: false,
+    });
     throw new Error(`git ${args.join(' ')} failed: ${stderr}`);
   }
 };
 
-const configureGitIdentity = async () => {
+const configureGitIdentity = async (logs) => {
   const name = process.env.GIT_COMMIT_USER || 'Render Content Bot';
   const email = process.env.GIT_COMMIT_EMAIL || 'render-bot@example.com';
 
-  await runGit(['config', 'user.name', name]);
-  await runGit(['config', 'user.email', email]);
+  await runGit(['config', 'user.name', name], logs);
+  await runGit(['config', 'user.email', email], logs);
 };
 
-const configureGitRemote = async () => {
+const configureGitRemote = async (logs) => {
   const token = process.env.GIT_PUSH_TOKEN;
   const fallbackRemote = process.env.GIT_REMOTE_URL;
 
   if (fallbackRemote) {
     try {
-      await runGit(['remote', 'add', defaultRemote, fallbackRemote]);
+      await runGit(['remote', 'add', defaultRemote, fallbackRemote], logs);
     } catch (error) {
       if (!error.message.includes('already exists')) {
         throw error;
@@ -61,7 +74,7 @@ const configureGitRemote = async () => {
 
   let currentUrl;
   try {
-    const { stdout } = await runGit(['remote', 'get-url', defaultRemote]);
+    const { stdout } = await runGit(['remote', 'get-url', defaultRemote], logs);
     currentUrl = stdout.trim();
   } catch (error) {
     throw new Error(
@@ -97,7 +110,7 @@ const configureGitRemote = async () => {
     authenticatedUrl = currentUrl.replace('https://', tokenPrefix);
   }
 
-  await runGit(['remote', 'set-url', defaultRemote, authenticatedUrl]);
+  await runGit(['remote', 'set-url', defaultRemote, authenticatedUrl], logs);
 };
 
 const writeDataModule = async ({ exportName, file }, value) => {
@@ -136,6 +149,7 @@ export async function POST(request) {
   const targetKeys = Object.keys(DATA_DEFINITIONS).filter(
     (key) => payload[key] !== undefined,
   );
+  const gitLogs = [];
 
   if (targetKeys.length === 0) {
     return NextResponse.json({ error: 'No recognized payload keys provided' }, { status: 400 });
@@ -160,10 +174,10 @@ export async function POST(request) {
     }
 
     for (const file of touchedFiles) {
-      await runGit(['add', file]);
+      await runGit(['add', file], gitLogs);
     }
 
-    await configureGitIdentity();
+    await configureGitIdentity(gitLogs);
 
     const commitMessage =
       typeof payload.commitMessage === 'string' && payload.commitMessage.trim()
@@ -171,25 +185,25 @@ export async function POST(request) {
         : defaultCommitMessage;
 
     try {
-      await runGit(['commit', '-m', commitMessage]);
+      await runGit(['commit', '-m', commitMessage], gitLogs);
     } catch (error) {
       if (error.message.includes('nothing to commit')) {
         return NextResponse.json(
-          { message: 'No changes to commit', files: touchedFiles },
+          { message: 'No changes to commit', files: touchedFiles, gitLogs },
           { status: 200 },
         );
       }
       throw error;
     }
 
-    await configureGitRemote();
-    await runGit(['push', defaultRemote, defaultBranch]);
+    await configureGitRemote(gitLogs);
+    await runGit(['push', defaultRemote, defaultBranch], gitLogs);
 
     return NextResponse.json(
-      { message: 'Content updated and pushed successfully', files: touchedFiles },
+      { message: 'Content updated and pushed successfully', files: touchedFiles, gitLogs },
       { status: 200 },
     );
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message, gitLogs }, { status: 500 });
   }
 }
