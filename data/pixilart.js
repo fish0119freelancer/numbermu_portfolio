@@ -3,7 +3,7 @@ export const pixilartItems = [
     "image": "/images/pixilart/pexels-pixabay-104827-scaled.jpg",
     "full": "/images/pixilart/pexels-pixabay-104827-scaled.jpg",
     "title": "狗狗全力追逐著一片落葉，展現天真無邪的快樂。",
-    "caption": "狗狗全力追逐著一片落葉，展現天真無邪的"
+    "caption": "狗狗全力追逐著一片落葉，展現天真無"
   },
   {
     "image": "/images/pixilart/pexels-pixabay-45201.jpg",
