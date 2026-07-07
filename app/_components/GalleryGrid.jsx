@@ -53,12 +53,14 @@ export default function GalleryGrid({ items, columns = 3, aspect = 'square' }) {
     <section className="mx-auto max-w-6xl px-5 pb-20">
       <div className={`grid gap-6 md:gap-8 ${columnClass}`}>
         {items.map((item, index) => {
-          const Wrapper = item.href ? 'a' : 'div';
-          const wrapperProps = item.href
+          const hasHref = item.href && item.href.trim();
+          const isExternal = hasHref && item.href.startsWith('http');
+          const Wrapper = hasHref ? 'a' : 'div';
+          const wrapperProps = hasHref
             ? {
                 href: item.href,
-                target: item.href.startsWith('http') ? '_blank' : undefined,
-                rel: item.href.startsWith('http') ? 'noreferrer noopener' : undefined,
+                target: isExternal ? '_blank' : undefined,
+                rel: isExternal ? 'noreferrer noopener' : undefined,
               }
             : {};
 

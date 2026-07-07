@@ -18,6 +18,16 @@ const toDataUrl = (file) =>
     reader.readAsDataURL(file);
   });
 
+const slugify = (text) => {
+  const cleaned = (text || '')
+    .trim()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  return cleaned || 'untitled';
+};
+
 function GalleryManager({
   title,
   description,
@@ -27,7 +37,7 @@ function GalleryManager({
   commitOptions,
 }) {
   const [draft, setDraft] = useState(dataset.items);
-  const [newItem, setNewItem] = useState({ image: '', title: '', caption: '', href: '' });
+  const [newItem, setNewItem] = useState({ image: '', title: '', slug: '', caption: '', href: '' });
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
@@ -49,6 +59,20 @@ function GalleryManager({
         itemIndex === index ? { ...item, [field]: value } : item,
       ),
     );
+  };
+
+  const makeUniqueSlug = (baseSlug, excludeIndex = -1) => {
+    const otherSlugs = draft
+      .filter((_, i) => i !== excludeIndex)
+      .map((d) => d.slug)
+      .filter(Boolean);
+    let candidate = baseSlug || 'untitled';
+    if (!otherSlugs.includes(candidate)) return candidate;
+    let counter = 2;
+    while (otherSlugs.includes(`${baseSlug || 'untitled'}-${counter}`)) {
+      counter += 1;
+    }
+    return `${baseSlug || 'untitled'}-${counter}`;
   };
 
   const replaceImage = async (index, file) => {
@@ -76,6 +100,18 @@ function GalleryManager({
 
   const persistAll = async () => {
     if (!hasChanges || saving) return;
+
+    // 防呆：檢查重複 slug
+    const slugs = draft.map((d) => d.slug).filter((s) => s && s.trim());
+    const dupes = slugs.filter((s, i) => slugs.indexOf(s) !== i);
+    if (dupes.length > 0) {
+      setFeedback({
+        type: 'error',
+        message: `網址代稱重複：${[...new Set(dupes)].join('、')}，請先修正再儲存。`,
+      });
+      return;
+    }
+
     setSaving(true);
     setFeedback({ type: 'info', message: 'Saving changes...' });
     try {
@@ -113,8 +149,18 @@ function GalleryManager({
 
   const addItem = () => {
     if (!newItem.image) return;
-    setDraft((current) => [...current, newItem]);
-    setNewItem({ image: '', title: '', caption: '', href: '' });
+    const baseSlug = newItem.slug || slugify(newItem.title) || 'untitled';
+    setDraft((current) => {
+      const existingSlugs = current.map((d) => d.slug).filter(Boolean);
+      let uniqueSlug = baseSlug;
+      let counter = 2;
+      while (existingSlugs.includes(uniqueSlug)) {
+        uniqueSlug = `${baseSlug}-${counter}`;
+        counter += 1;
+      }
+      return [...current, { ...newItem, slug: uniqueSlug }];
+    });
+    setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
   };
 
   return (
@@ -215,8 +261,27 @@ function GalleryManager({
                     標題
                     <input
                       value={item.title || ''}
-                      onChange={(event) => updateField(index, 'title', event.target.value)}
+                      onChange={(event) => {
+                        const newTitle = event.target.value;
+                        updateField(index, 'title', newTitle);
+                        // 如果 slug 是自動產生的（空的或與舊標題相符），則自動更新並去重
+                        const oldAutoSlug = slugify(item.title || '');
+                        if (!item.slug || item.slug === oldAutoSlug) {
+                          updateField(index, 'slug', makeUniqueSlug(slugify(newTitle) || 'untitled', index));
+                        }
+                      }}
                       placeholder="可選填"
+                      className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                    />
+                  </label>
+                )}
+                {fields.includes('slug') && (
+                  <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                    網址代稱
+                    <input
+                      value={item.slug || ''}
+                      onChange={(event) => updateField(index, 'slug', event.target.value)}
+                      placeholder="自動從標題產生，也可手動修改"
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
                   </label>
@@ -311,7 +376,37 @@ function GalleryManager({
                 標題
                 <input
                   value={newItem.title}
-                  onChange={(event) => setNewItem((prev) => ({ ...prev, title: event.target.value }))}
+                  onChange={(event) => {
+                    const newTitle = event.target.value;
+                    setNewItem((prev) => {
+                      const oldAutoSlug = slugify(prev.title || '');
+                      // 只在 slug 是自動產生時才自動更新
+                      if (!prev.slug || prev.slug === oldAutoSlug) {
+                        const existingSlugs = draft.map((d) => d.slug).filter(Boolean);
+                        let candidate = slugify(newTitle) || 'untitled';
+                        if (existingSlugs.includes(candidate)) {
+                          let counter = 2;
+                          while (existingSlugs.includes(`${candidate}-${counter}`)) {
+                            counter += 1;
+                          }
+                          candidate = `${candidate}-${counter}`;
+                        }
+                        return { ...prev, title: newTitle, slug: candidate };
+                      }
+                      return { ...prev, title: newTitle };
+                    });
+                  }}
+                  className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                />
+              </label>
+            )}
+            {fields.includes('slug') && (
+              <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                網址代稱
+                <input
+                  value={newItem.slug}
+                  onChange={(event) => setNewItem((prev) => ({ ...prev, slug: event.target.value }))}
+                  placeholder="自動從標題產生，也可手動修改"
                   className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                 />
               </label>
@@ -713,7 +808,7 @@ export default function AdminPage() {
           title="Work 作品集"
           description="管理案例如需連結至原始文章，可設定標題、說明與外部連結。"
           dataset={work}
-          fields={['title', 'caption']}
+          fields={['title', 'slug', 'caption']}
           showLink
         />
         <GalleryManager
