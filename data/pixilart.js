@@ -1,59 +1,5 @@
 export const pixilartItems = [
   {
-    "image": "/images/pixilart/pexels-pixabay-45201.jpg",
-    "full": "/images/pixilart/pexels-pixabay-45201.jpg",
-    "title": "貓咪坐在窗台邊，靜靜地看著外面滴答的雨水。",
-    "caption": "貓咪坐在窗台邊，靜靜地看著外面滴答的雨水。"
-  },
-  {
-    "image": "/images/pixilart/pexels-neilyonamine-29907558-scaled.jpg",
-    "full": "/images/pixilart/pexels-neilyonamine-29907558-scaled.jpg",
-    "title": "一隻貓咪和小狗並排躺在地板上，彼此靠著，展現最純真的友誼。",
-    "caption": "一隻貓咪和小狗並排躺在地板上，彼此靠著，展現最純真的友誼。"
-  },
-  {
-    "image": "/images/pixilart/pexels-maria-jn-1336371304-29899458-scaled.jpg",
-    "full": "/images/pixilart/pexels-maria-jn-1336371304-29899458-scaled.jpg",
-    "title": "卷毛狗狗躺在床上，進入甜美的夢鄉，連呼吸都變得輕柔。",
-    "caption": "卷毛狗狗躺在床上，進入甜美的夢鄉，連呼吸都變得輕柔。"
-  },
-  {
-    "image": "/images/pixilart/pexels-leo-johnson-277047373-29896250-scaled.jpg",
-    "full": "/images/pixilart/pexels-leo-johnson-277047373-29896250-scaled.jpg",
-    "title": "小貓爬上書架的頂端，好奇地俯瞰這片屬於牠的“世界”。",
-    "caption": "小貓爬上書架的頂端，好奇地俯瞰這片屬於牠的“世界”。"
-  },
-  {
-    "image": "/images/pixilart/pexels-kowalievska-1170986-scaled.jpg",
-    "full": "/images/pixilart/pexels-kowalievska-1170986-scaled.jpg",
-    "title": "小狗抬頭看著手中的零食，眼中閃爍著期待的光芒。",
-    "caption": "小狗抬頭看著手中的零食，眼中閃爍著期待的光芒。"
-  },
-  {
-    "image": "/images/pixilart/pexels-katlovessteve-551628-scaled.jpg",
-    "full": "/images/pixilart/pexels-katlovessteve-551628-scaled.jpg",
-    "title": "貓咪依偎在主人的膝蓋上，閉著眼睛，享受彼此的陪伴時光。",
-    "caption": "貓咪依偎在主人的膝蓋上，閉著眼睛，享受彼此的陪伴時光。"
-  },
-  {
-    "image": "/images/pixilart/pexels-guvo-28872296-scaled.jpg",
-    "full": "/images/pixilart/pexels-guvo-28872296-scaled.jpg",
-    "title": "狗狗咬著心愛的小球，期待著主人再次和牠一起玩耍。",
-    "caption": "狗狗咬著心愛的小球，期待著主人再次和牠一起玩耍。"
-  },
-  {
-    "image": "/images/pixilart/pexels-emre-senel-549191472-29910204-scaled.jpg",
-    "full": "/images/pixilart/pexels-emre-senel-549191472-29910204-scaled.jpg",
-    "title": "一隻貓咪盯著窗外，眼神中充滿了對外面世界的好奇與探索。",
-    "caption": "一隻貓咪盯著窗外，眼神中充滿了對外面世界的好奇與探索。"
-  },
-  {
-    "image": "/images/pixilart/pexels-david-kanigan-239927285-29907810-scaled.jpg",
-    "full": "/images/pixilart/pexels-david-kanigan-239927285-29907810-scaled.jpg",
-    "title": "草地上的狗狗飛奔而過，耳朵隨風擺動，展現純粹的快樂。",
-    "caption": "草地上的狗狗飛奔而過，耳朵隨風擺動，展現純粹的快樂。"
-  },
-  {
     "image": "/images/pixilart/pexels-cong-h-613161-1404824-scaled.jpg",
     "full": "/images/pixilart/pexels-cong-h-613161-1404824-scaled.jpg",
     "title": "一隻小狗歪著頭，注視著鏡頭，似乎在思考主人手中的相機是什麼。",
