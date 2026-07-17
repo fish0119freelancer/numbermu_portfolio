@@ -16,11 +16,5 @@ export const pixilartItems = [
     "full": "/images/pixilart/Chenoa.gif",
     "title": "Chenoa",
     "caption": "Chenoa"
-  },
-  {
-    "image": "/images/pixilart/Sprite-0003.gif",
-    "full": "/images/pixilart/Sprite-0003.gif",
-    "title": "Sprite-0003",
-    "caption": "Sprite-0003"
   }
 ];
