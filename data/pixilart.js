@@ -1,11 +1,5 @@
 export const pixilartItems = [
   {
-    "image": "/images/pixilart/pexels-pixabay-104827-scaled.jpg",
-    "full": "/images/pixilart/pexels-pixabay-104827-scaled.jpg",
-    "title": "狗狗全力追逐著一片落葉，展現天真無",
-    "caption": "狗狗全力追逐著一片落"
-  },
-  {
     "image": "/images/pixilart/pexels-pixabay-45201.jpg",
     "full": "/images/pixilart/pexels-pixabay-45201.jpg",
     "title": "貓咪坐在窗台邊，靜靜地看著外面滴答的雨水。",
