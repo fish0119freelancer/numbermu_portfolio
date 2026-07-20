@@ -1,5 +1,6 @@
 import { workItems } from '../../../data/work';
 import Link from 'next/link';
+import { LightboxImage } from '../../_components/Lightbox';
 
 export function generateStaticParams() {
   return workItems
@@ -29,10 +30,6 @@ export default function WorkDetailPage({ params }) {
     );
   }
 
-  const isGif =
-    item.image?.toLowerCase().endsWith('.gif') ||
-    item.image?.startsWith('data:');
-
   return (
     <section className="section-wrapper">
       <div className="mx-auto max-w-4xl">
@@ -56,19 +53,11 @@ export default function WorkDetailPage({ params }) {
 
         {/* Full image */}
         <div className="overflow-hidden rounded-2xl bg-soft/50">
-          {isGif ? (
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full object-contain"
-            />
-          ) : (
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full object-contain"
-            />
-          )}
+          <LightboxImage
+            src={item.image}
+            alt={item.title}
+            className="w-full object-contain"
+          />
         </div>
 
         {/* Title & caption */}
