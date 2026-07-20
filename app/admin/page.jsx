@@ -61,6 +61,15 @@ function GalleryManager({
     );
   };
 
+  const updateNumericField = (index, field, rawValue) => {
+    if (rawValue === '' || rawValue === null || rawValue === undefined) {
+      updateField(index, field, undefined);
+      return;
+    }
+    const num = Number(rawValue);
+    updateField(index, field, Number.isNaN(num) ? undefined : num);
+  };
+
   const makeUniqueSlug = (baseSlug, excludeIndex = -1) => {
     const otherSlugs = draft
       .filter((_, i) => i !== excludeIndex)
@@ -256,6 +265,30 @@ function GalleryManager({
                     />
                   </label>
                 </div>
+                {fields.includes('width') && (
+                  <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                    顯示寬度 (px)
+                    <input
+                      type="number"
+                      value={item.width ?? ''}
+                      onChange={(event) => updateNumericField(index, 'width', event.target.value)}
+                      placeholder="留空則自動使用 450"
+                      className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                    />
+                  </label>
+                )}
+                {fields.includes('row') && (
+                  <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                    排列行號
+                    <input
+                      type="number"
+                      value={item.row ?? ''}
+                      onChange={(event) => updateNumericField(index, 'row', event.target.value)}
+                      placeholder="同一數字的圖片會排在同一列"
+                      className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                    />
+                  </label>
+                )}
                 {fields.includes('title') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
                     標題
@@ -371,6 +404,38 @@ function GalleryManager({
                 className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
               />
             </label>
+            {fields.includes('width') && (
+              <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                顯示寬度 (px)
+                <input
+                  type="number"
+                  value={newItem.width ?? ''}
+                  onChange={(event) => {
+                    const raw = event.target.value;
+                    const val = (raw === '' || raw === null || raw === undefined) ? undefined : (Number.isNaN(Number(raw)) ? undefined : Number(raw));
+                    setNewItem((prev) => ({ ...prev, width: val }));
+                  }}
+                  placeholder="留空則自動使用 450"
+                  className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                />
+              </label>
+            )}
+            {fields.includes('row') && (
+              <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                排列行號
+                <input
+                  type="number"
+                  value={newItem.row ?? ''}
+                  onChange={(event) => {
+                    const raw = event.target.value;
+                    const val = (raw === '' || raw === null || raw === undefined) ? undefined : (Number.isNaN(Number(raw)) ? undefined : Number(raw));
+                    setNewItem((prev) => ({ ...prev, row: val }));
+                  }}
+                  placeholder="同一數字的圖片會排在同一列"
+                  className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                />
+              </label>
+            )}
             {fields.includes('title') && (
               <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
                 標題
@@ -816,7 +881,7 @@ export default function AdminPage() {
           title="Art 插畫集"
           description="新增或刪除插畫圖像，維持大量作品瀑布流展示。"
           dataset={art}
-          fields={['caption']}
+          fields={['caption', 'width', 'row']}
         />
         <GalleryManager
           commitOptions={commitOptions}

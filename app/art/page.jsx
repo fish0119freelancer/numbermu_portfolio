@@ -20,15 +20,19 @@ export default function ArtPage() {
     <section className="art-section">
       {rows.map((row, rowIndex) => (
         <div className="art-row" key={`art-row-${rowIndex}`}>
-          {row.map((item, index) => (
-            <div
-              className="art-item"
-              key={`${item.image}-${index}`}
-              style={item.width ? { width: `${item.width}px` } : undefined}
-            >
-              <img src={item.image} alt={item.title || ''} loading="lazy" />
-            </div>
-          ))}
+          {row.map((item, index) => {
+            const widthNum = typeof item.width === 'number' ? item.width : Number(item.width);
+            const itemWidth = typeof widthNum === 'number' && !Number.isNaN(widthNum) && widthNum > 0 ? widthNum : 450;
+            return (
+              <div
+                className="art-item"
+                key={`${item.image}-${index}`}
+                style={{ width: `${itemWidth}px` }}
+              >
+                <img src={item.image} alt={item.title || ''} loading="lazy" />
+              </div>
+            );
+          })}
         </div>
       ))}
     </section>
