@@ -7,7 +7,7 @@ export const artItems = [
   {
     "image": "/images/art/職z.png",
     "width": 467,
-    "row": 2
+    "row": 0
   },
   {
     "image": "/images/art/職.png",
