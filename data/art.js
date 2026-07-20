@@ -307,6 +307,6 @@ export const artItems = [
     "slug": "untitled-2",
     "caption": "",
     "href": "",
-    "row": 1
+    "row": 20
   }
 ];
