@@ -1,1 +1,8 @@
 node_modules/
+
+# Next.js build output / cache — must never be committed
+.next/
+out/
+
+# Local env
+.env*.local
