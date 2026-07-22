@@ -34,12 +34,15 @@ function GalleryManager({
   dataset,
   fields = ['title', 'caption'],
   showLink = false,
+  showGallery = false,
   commitOptions,
 }) {
   const [draft, setDraft] = useState(dataset.items);
   const [newItem, setNewItem] = useState({ image: '', title: '', slug: '', caption: '', href: '' });
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [dragIndex, setDragIndex] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
 
   useEffect(() => {
     setDraft(dataset.items);
@@ -97,14 +100,83 @@ function GalleryManager({
     setDraft((current) => current.filter((_, itemIndex) => itemIndex !== index));
   };
 
-  const moveItem = (index, direction) => {
+  const reorderItem = (from, to) => {
     setDraft((current) => {
+      if (
+        from === null ||
+        to === null ||
+        from === to ||
+        from < 0 ||
+        to < 0 ||
+        from >= current.length ||
+        to >= current.length
+      ) {
+        return current;
+      }
       const next = [...current];
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= current.length) return current;
-      [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
       return next;
     });
+  };
+
+  const normalizeImg = (img) =>
+    typeof img === 'string' ? { image: img, caption: '' } : img;
+
+  const addItemImage = (index, src) => {
+    setDraft((current) =>
+      current.map((item, i) => {
+        if (i !== index) return item;
+        const imgs = Array.isArray(item.images) ? item.images : [];
+        return { ...item, images: [...imgs, { image: src, caption: '' }] };
+      }),
+    );
+  };
+
+  const updateItemImageField = (index, imgIndex, field, value) => {
+    setDraft((current) =>
+      current.map((item, i) => {
+        if (i !== index) return item;
+        const imgs = (Array.isArray(item.images) ? item.images : []).map((img, j) =>
+          j === imgIndex ? { ...normalizeImg(img), [field]: value } : normalizeImg(img),
+        );
+        return { ...item, images: imgs };
+      }),
+    );
+  };
+
+  const removeItemImage = (index, imgIndex) => {
+    setDraft((current) =>
+      current.map((item, i) => {
+        if (i !== index) return item;
+        const imgs = (Array.isArray(item.images) ? item.images : []).filter(
+          (_, j) => j !== imgIndex,
+        );
+        return { ...item, images: imgs };
+      }),
+    );
+  };
+
+  const moveItemImage = (index, imgIndex, direction) => {
+    setDraft((current) =>
+      current.map((item, i) => {
+        if (i !== index) return item;
+        const imgs = [...(Array.isArray(item.images) ? item.images : [])];
+        const target = imgIndex + direction;
+        if (target < 0 || target >= imgs.length) return item;
+        [imgs[imgIndex], imgs[target]] = [imgs[target], imgs[imgIndex]];
+        return { ...item, images: imgs };
+      }),
+    );
+  };
+
+  const handleItemImageFile = async (index, file) => {
+    try {
+      const dataUrl = await toDataUrl(file);
+      addItemImage(index, dataUrl);
+    } catch (error) {
+      console.error('failed to read file', error);
+    }
   };
 
   const persistAll = async () => {
@@ -167,7 +239,7 @@ function GalleryManager({
         uniqueSlug = `${baseSlug}-${counter}`;
         counter += 1;
       }
-      return [...current, { ...newItem, slug: uniqueSlug }];
+      return [{ ...newItem, slug: uniqueSlug }, ...current];
     });
     setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
   };
@@ -222,9 +294,38 @@ function GalleryManager({
         {draft.map((item, index) => (
           <div
             key={`${item.image}-${index}`}
-            className="grid gap-4 rounded-2xl border border-soft/60 p-4 md:grid-cols-[160px,1fr]"
+            onDragOver={(event) => {
+              event.preventDefault();
+              if (dragIndex !== null && dragOverIndex !== index) setDragOverIndex(index);
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              reorderItem(dragIndex, index);
+              setDragIndex(null);
+              setDragOverIndex(null);
+            }}
+            className={`relative grid gap-4 rounded-2xl border p-4 transition md:grid-cols-[160px,1fr] ${
+              dragIndex === index
+                ? 'border-brand/60 opacity-50'
+                : dragOverIndex === index
+                ? 'border-brand ring-2 ring-brand/40'
+                : 'border-soft/60'
+            }`}
           >
             <div className="space-y-3">
+              <div
+                draggable
+                onDragStart={() => setDragIndex(index)}
+                onDragEnd={() => {
+                  setDragIndex(null);
+                  setDragOverIndex(null);
+                }}
+                title="按住拖曳調整順序"
+                className="flex cursor-grab items-center justify-between rounded-lg bg-soft/40 px-3 py-2 text-accent/70 active:cursor-grabbing"
+              >
+                <span className="text-xs font-semibold tracking-[0.2em]">#{index + 1}</span>
+                <span aria-hidden className="text-base leading-none text-accent/40">⠿</span>
+              </div>
               {item.image ? (
                 <img
                   src={item.image}
@@ -342,21 +443,105 @@ function GalleryManager({
                   </label>
                 )}
               </div>
+              {showGallery && (
+                <div className="rounded-2xl border border-soft/50 bg-soft/20 p-4">
+                  <h4 className="text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                    詳細圖片
+                  </h4>
+                  <p className="mt-1 text-[0.7rem] text-accent/50">
+                    點進此作品時，封面下方會依序顯示這些圖片。
+                  </p>
+                  <div className="mt-3 space-y-3">
+                    {(Array.isArray(item.images) ? item.images : []).map((img, imgIndex) => {
+                      const imgObj = typeof img === 'string' ? { image: img, caption: '' } : img;
+                      return (
+                        <div
+                          key={`${imgObj.image}-${imgIndex}`}
+                          className="grid gap-3 rounded-xl border border-soft/60 bg-white p-3 md:grid-cols-[80px,1fr]"
+                        >
+                          {imgObj.image ? (
+                            <img
+                              src={imgObj.image}
+                              alt=""
+                              className="aspect-square w-full rounded-lg object-cover"
+                            />
+                          ) : (
+                            <div className="flex aspect-square items-center justify-center rounded-lg border border-dashed border-soft text-[0.6rem] text-accent/40">
+                              無圖
+                            </div>
+                          )}
+                          <div className="flex flex-col gap-2">
+                            <input
+                              value={imgObj.image || ''}
+                              onChange={(event) =>
+                                updateItemImageField(index, imgIndex, 'image', event.target.value)
+                              }
+                              placeholder="圖片網址或 data:image"
+                              className="w-full rounded-lg border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                            />
+                            <input
+                              value={imgObj.caption || ''}
+                              onChange={(event) =>
+                                updateItemImageField(index, imgIndex, 'caption', event.target.value)
+                              }
+                              placeholder="說明文字（可留空）"
+                              className="w-full rounded-lg border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                            />
+                            <div className="flex flex-wrap gap-2 text-[0.65rem]">
+                              <button
+                                type="button"
+                                onClick={() => moveItemImage(index, imgIndex, -1)}
+                                className="rounded-full border border-soft px-3 py-1 font-semibold uppercase tracking-[0.2em] text-accent/70 transition hover:bg-soft/60"
+                              >
+                                上移
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => moveItemImage(index, imgIndex, 1)}
+                                className="rounded-full border border-soft px-3 py-1 font-semibold uppercase tracking-[0.2em] text-accent/70 transition hover:bg-soft/60"
+                              >
+                                下移
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeItemImage(index, imgIndex)}
+                                className="rounded-full border border-red-300 px-3 py-1 font-semibold uppercase tracking-[0.2em] text-red-500 transition hover:bg-red-50"
+                              >
+                                刪除
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    <label className="cursor-pointer rounded-full border border-brand/40 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-brand transition hover:bg-brand/10">
+                      上傳圖片
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            handleItemImageFile(index, file);
+                            event.target.value = '';
+                          }
+                        }}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => addItemImage(index, '')}
+                      className="rounded-full border border-soft px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-accent/70 transition hover:bg-soft/60"
+                    >
+                      新增空白（貼網址）
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="flex flex-wrap items-center gap-3 text-xs">
-                <button
-                  type="button"
-                  onClick={() => moveItem(index, -1)}
-                  className="rounded-full border border-soft px-3 py-2 font-semibold uppercase tracking-[0.3em] text-accent/70 transition hover:bg-soft/60"
-                >
-                  上移
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveItem(index, 1)}
-                  className="rounded-full border border-soft px-3 py-2 font-semibold uppercase tracking-[0.3em] text-accent/70 transition hover:bg-soft/60"
-                >
-                  下移
-                </button>
                 <button
                   type="button"
                   onClick={() => removeItem(index)}
@@ -875,6 +1060,7 @@ export default function AdminPage() {
           dataset={work}
           fields={['title', 'slug', 'caption']}
           showLink
+          showGallery
         />
         <GalleryManager
           commitOptions={commitOptions}

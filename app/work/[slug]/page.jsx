@@ -1,6 +1,6 @@
 import { workItems } from '../../../data/work';
 import Link from 'next/link';
-import { LightboxImage } from '../../_components/Lightbox';
+import WorkGallery from '../../_components/WorkGallery';
 
 export function generateStaticParams() {
   return workItems
@@ -51,14 +51,8 @@ export default function WorkDetailPage({ params }) {
           返回作品集
         </Link>
 
-        {/* Full image */}
-        <div className="overflow-hidden rounded-2xl bg-soft/50">
-          <LightboxImage
-            src={item.image}
-            alt={item.title}
-            className="w-full object-contain"
-          />
-        </div>
+        {/* Cover + project detail images */}
+        <WorkGallery cover={item.image} title={item.title} images={item.images} />
 
         {/* Title & caption */}
         <div className="mt-8 space-y-4">
