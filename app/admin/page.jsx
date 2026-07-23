@@ -393,12 +393,12 @@ function GalleryManager({
                 )}
                 {fields.includes('row') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                    排列行號
+                    排列行號（拖曳後自動重算，也可手動改）
                     <input
                       type="number"
                       value={item.row ?? ''}
                       onChange={(event) => updateNumericField(index, 'row', event.target.value)}
-                      placeholder="同一數字的圖片會排在同一列"
+                      placeholder="同數字＝同一列；留空則依拖曳順序每 3 張一列"
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
                   </label>
@@ -1078,9 +1078,9 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Art 插畫集"
-          description="新增或刪除插畫圖像，維持大量作品瀑布流展示。"
+          description="拖曳左側 # 把手即可調整順序與列位。同一行號的圖片會排在同一列。"
           dataset={art}
-          fields={['caption', 'width']}
+          fields={['caption', 'width', 'row']}
         />
         <GalleryManager
           commitOptions={commitOptions}
