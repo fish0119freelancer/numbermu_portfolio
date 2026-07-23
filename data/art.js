@@ -81,8 +81,8 @@ export const artItems = [
   },
   {
     "image": "/images/art/migrated-20260720-art-001-033eddc9.png",
-    "title": "",
     "slug": "untitled",
+    "title": "",
     "caption": "",
     "href": ""
   },
@@ -94,11 +94,6 @@ export const artItems = [
   {
     "image": "/images/art/119591993_136609794836346_1742082398551904197_n.jpg",
     "width": 483,
-    "row": 5
-  },
-  {
-    "image": "/images/art/58828134-e1189764b900442148cf30355f82a069_p0.png",
-    "width": 432,
     "row": 5
   },
   {
@@ -160,6 +155,11 @@ export const artItems = [
     "image": "/images/art/275990509_494171579080164_3955605823246195131_n.jpg",
     "width": 578,
     "row": 9
+  },
+  {
+    "image": "/images/art/58828134-e1189764b900442148cf30355f82a069_p0.png",
+    "width": 432,
+    "row": 20
   },
   {
     "image": "/images/art/unknownzzzXX.png",
@@ -303,8 +303,8 @@ export const artItems = [
   },
   {
     "image": "/images/content/0f5749747e19e3b4bac801391f1824fe97b7d0a031cc402c4b73fa20343ea988.png",
-    "title": "",
     "slug": "untitled-2",
+    "title": "",
     "caption": "",
     "href": "",
     "row": 20
