@@ -97,7 +97,13 @@ function GalleryManager({
   };
 
   const removeItem = (index) => {
-    setDraft((current) => current.filter((_, itemIndex) => itemIndex !== index));
+    setDraft((current) => {
+      const filtered = current.filter((_, itemIndex) => itemIndex !== index);
+      if (filtered.some((item) => item && typeof item.row === 'number')) {
+        return filtered.map((item, i) => ({ ...item, row: Math.floor(i / 3) }));
+      }
+      return filtered;
+    });
   };
 
   const reorderItem = (from, to) => {
@@ -116,6 +122,11 @@ function GalleryManager({
       const next = [...current];
       const [moved] = next.splice(from, 1);
       next.splice(to, 0, moved);
+      // Auto-recalculate row after drag so display order matches new positions.
+      // Only touches items that already have a row property (e.g. Art panel).
+      if (next.some((item) => item && typeof item.row === 'number')) {
+        return next.map((item, i) => ({ ...item, row: Math.floor(i / 3) }));
+      }
       return next;
     });
   };
@@ -239,7 +250,9 @@ function GalleryManager({
         uniqueSlug = `${baseSlug}-${counter}`;
         counter += 1;
       }
-      return [{ ...newItem, slug: uniqueSlug }, ...current];
+      const inserted = [{ ...newItem, slug: uniqueSlug }, ...current];
+      const hasRow = inserted.some((item) => item && typeof item.row === 'number');
+      return hasRow ? inserted.map((item, i) => ({ ...item, row: Math.floor(i / 3) })) : inserted;
     });
     setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
   };
