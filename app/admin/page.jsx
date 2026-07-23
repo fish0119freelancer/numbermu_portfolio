@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -1080,7 +1080,7 @@ export default function AdminPage() {
           title="Art 插畫集"
           description="新增或刪除插畫圖像，維持大量作品瀑布流展示。"
           dataset={art}
-          fields={['caption', 'width', 'row']}
+          fields={['caption', 'width']}
         />
         <GalleryManager
           commitOptions={commitOptions}
