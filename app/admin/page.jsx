@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -97,13 +97,7 @@ function GalleryManager({
   };
 
   const removeItem = (index) => {
-    setDraft((current) => {
-      const filtered = current.filter((_, itemIndex) => itemIndex !== index);
-      if (filtered.some((item) => item && typeof item.row === 'number')) {
-        return filtered.map((item, i) => ({ ...item, row: Math.floor(i / 3) }));
-      }
-      return filtered;
-    });
+    setDraft((current) => current.filter((_, itemIndex) => itemIndex !== index));
   };
 
   const reorderItem = (from, to) => {
@@ -122,13 +116,12 @@ function GalleryManager({
       const next = [...current];
       const [moved] = next.splice(from, 1);
       next.splice(to, 0, moved);
-      // Auto-recalculate row after drag so display order matches new positions.
-      // Only touches items that already have a row property (e.g. Art panel).
-      if (next.some((item) => item && typeof item.row === 'number')) {
-        return next.map((item, i) => ({ ...item, row: Math.floor(i / 3) }));
-      }
       return next;
     });
+  };
+
+  const clearAllRows = () => {
+    setDraft((current) => current.map((item) => ({ ...item, row: undefined })));
   };
 
   const normalizeImg = (img) =>
@@ -250,9 +243,7 @@ function GalleryManager({
         uniqueSlug = `${baseSlug}-${counter}`;
         counter += 1;
       }
-      const inserted = [{ ...newItem, slug: uniqueSlug }, ...current];
-      const hasRow = inserted.some((item) => item && typeof item.row === 'number');
-      return hasRow ? inserted.map((item, i) => ({ ...item, row: Math.floor(i / 3) })) : inserted;
+      return [{ ...newItem, slug: uniqueSlug }, ...current];
     });
     setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
   };
@@ -287,6 +278,15 @@ function GalleryManager({
           >
             回復預設
           </button>
+          {fields.includes('row') && (
+            <button
+              type="button"
+              onClick={clearAllRows}
+              className="rounded-full border border-soft px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-accent/50 transition hover:bg-soft/40"
+            >
+              清除全行號
+            </button>
+          )}
           {feedback?.message && (
             <span
               className={`text-[0.65rem] font-medium tracking-[0.2em] ${
@@ -393,14 +393,23 @@ function GalleryManager({
                 )}
                 {fields.includes('row') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                    排列行號（拖曳後自動重算，也可手動改）
+                    排列行號（留空 = 自動依順序排列）
                     <input
                       type="number"
                       value={item.row ?? ''}
                       onChange={(event) => updateNumericField(index, 'row', event.target.value)}
-                      placeholder="同數字＝同一列；留空則依拖曳順序每 3 張一列"
+                      placeholder="留空 = 自動每 3 張一列；填數字 = 手動分組"
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
+                    {item.row !== undefined && (
+                      <button
+                        type="button"
+                        onClick={() => updateField(index, 'row', undefined)}
+                        className="mt-1 text-[0.6rem] text-accent/40 hover:text-accent/70"
+                      >
+                        清除此行號（改為自動排列）
+                      </button>
+                    )}
                   </label>
                 )}
                 {fields.includes('title') && (
@@ -620,7 +629,7 @@ function GalleryManager({
             )}
             {fields.includes('row') && (
               <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                排列行號
+                排列行號（留空 = 自動依順序排列）
                 <input
                   type="number"
                   value={newItem.row ?? ''}
@@ -629,7 +638,7 @@ function GalleryManager({
                     const val = (raw === '' || raw === null || raw === undefined) ? undefined : (Number.isNaN(Number(raw)) ? undefined : Number(raw));
                     setNewItem((prev) => ({ ...prev, row: val }));
                   }}
-                  placeholder="同一數字的圖片會排在同一列"
+                  placeholder="留空 = 自動每 3 張一列；填數字 = 手動分組"
                   className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                 />
               </label>
@@ -1078,7 +1087,7 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Art 插畫集"
-          description="拖曳左側 # 把手即可調整順序與列位。同一行號的圖片會排在同一列。"
+          description="拖曳左側 # 把手調整順序。行號留空=自動每 3 張一列；填數字=手動指定列位。"
           dataset={art}
           fields={['caption', 'width', 'row']}
         />
