@@ -9,6 +9,7 @@
     "lint": "next lint",
     "export": "next export",
     "test:content": "node --test scripts/content-contract.test.mjs",
+    "test:extractor": "node --test scripts/image-extractor.test.mjs",
     "validate:content": "node scripts/validate-content.mjs"
   },
   "dependencies": {

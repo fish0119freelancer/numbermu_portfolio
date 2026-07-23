@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir, readFile, unlink } from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { promisify } from 'util';
@@ -9,7 +10,9 @@ import {
   serializePureJson,
   validateContent,
   validateImageBudget,
+  IMAGE_LIMITS,
 } from '../../../lib/content-contract.mjs';
+import { extractImagesFromPayload } from '../../../lib/image-extractor.mjs';
 
 const execFileAsync = promisify(execFile);
 
@@ -337,39 +340,95 @@ export async function POST(request) {
     return await withGitLock(async () => {
       const gitLogs = [];
       const touchedFiles = [];
+      const createdImageFiles = [];
+      const backupDataFiles = new Map();
 
-      for (const key of targetKeys) {
-        const definition = DATA_DEFINITIONS[key];
-        const file = await writeDataModule(definition, validated[key]);
-        touchedFiles.push(file);
+      const extractionOptions = {
+        publicDir: path.join(repoRoot, 'public'),
+        imagePrefix: '/images/content/',
+        maxImageBytes: IMAGE_LIMITS.maxSingleBytes,
+        maxTotalBytes: IMAGE_LIMITS.maxPayloadBytes,
+      };
+
+      try {
+        for (const key of targetKeys) {
+          const definition = DATA_DEFINITIONS[key];
+          const dataFilePath = path.join(repoRoot, definition.file);
+
+          try {
+            const originalContent = await readFile(dataFilePath);
+            backupDataFiles.set(dataFilePath, originalContent);
+          } catch {
+            backupDataFiles.set(dataFilePath, null);
+          }
+
+          const { payload: transformedPayload, imageFiles } = extractImagesFromPayload(
+            validated[key],
+            extractionOptions,
+          );
+
+          for (const img of imageFiles) {
+            if (img.created) {
+              const dir = path.dirname(img.absolutePath);
+              await mkdir(dir, { recursive: true });
+
+              const tempPath = `${img.absolutePath}.tmp.${Date.now()}_${Math.random().toString(36).substring(2)}`;
+              await writeFile(tempPath, img.bytes);
+              await fs.promises.rename(tempPath, img.absolutePath);
+
+              createdImageFiles.push(img);
+              if (!touchedFiles.includes(img.relativePath)) {
+                touchedFiles.push(img.relativePath);
+              }
+            }
+          }
+
+          const file = await writeDataModule(definition, transformedPayload);
+          if (!touchedFiles.includes(file)) {
+            touchedFiles.push(file);
+          }
+        }
+
+        await configureGitIdentity(gitLogs);
+
+        // Stage only the files this request touched.
+        await runGit(['add', '--', ...touchedFiles], gitLogs);
+
+        // Decide "nothing to commit" from git's actual porcelain output for OUR
+        // files — never from a thrown error message.
+        const status = await runGit(['status', '--porcelain', '--', ...touchedFiles], gitLogs);
+        if (!status.stdout.trim()) {
+          return NextResponse.json(
+            {
+              message: 'No changes to commit',
+              status: 'unchanged',
+              files: touchedFiles,
+              written: true,
+              committed: false,
+              pushed: false,
+              gitLogs: toSafeLogs(gitLogs),
+            },
+            { status: 200 },
+          );
+        }
+
+        // Commit ONLY our pathspec, so a stray file staged by another actor can
+        // never be swept into this commit.
+        await runGit(['commit', '-m', commitMessage, '--', ...touchedFiles], gitLogs);
+      } catch (transactionErr) {
+        for (const [filePath, content] of backupDataFiles.entries()) {
+          if (content !== null) {
+            await writeFile(filePath, content).catch(() => {});
+          }
+        }
+        for (const img of createdImageFiles) {
+          await unlink(img.absolutePath).catch(() => {});
+        }
+        if (touchedFiles.length > 0) {
+          await runGit(['reset', 'HEAD', '--', ...touchedFiles], []).catch(() => {});
+        }
+        throw transactionErr;
       }
-
-      await configureGitIdentity(gitLogs);
-
-      // Stage only the files this request touched.
-      await runGit(['add', '--', ...touchedFiles], gitLogs);
-
-      // Decide "nothing to commit" from git's actual porcelain output for OUR
-      // files — never from a thrown error message.
-      const status = await runGit(['status', '--porcelain', '--', ...touchedFiles], gitLogs);
-      if (!status.stdout.trim()) {
-        return NextResponse.json(
-          {
-            message: 'No changes to commit',
-            status: 'unchanged',
-            files: touchedFiles,
-            written: true,
-            committed: false,
-            pushed: false,
-            gitLogs: toSafeLogs(gitLogs),
-          },
-          { status: 200 },
-        );
-      }
-
-      // Commit ONLY our pathspec, so a stray file staged by another actor can
-      // never be swept into this commit.
-      await runGit(['commit', '-m', commitMessage, '--', ...touchedFiles], gitLogs);
 
       // Everything past this point is "publish". The commit already exists
       // locally, so ANY failure here (including resolving the remote) must be
