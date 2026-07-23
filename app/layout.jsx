@@ -1,6 +1,5 @@
 import './globals.css';
 import Header from './_components/Header';
-import Footer from './_components/Footer';
 
 export const metadata = {
   title: 'numbermuu 的作品集',
@@ -15,7 +14,6 @@ export default function RootLayout({ children }) {
         <main className="flex-1">
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   );
