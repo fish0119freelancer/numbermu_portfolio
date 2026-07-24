@@ -63,6 +63,12 @@ export const workItems = [
     "image": "/images/work/photo_2024-10-06_01-12-50.jpg",
     "slug": "mumu-heavy-industry",
     "title": "姆咪重工",
-    "caption": "個人品牌側寫，延續原站的首篇文章封面。"
+    "caption": "個人品牌側寫，延續原站的首篇文章封面。",
+    "images": [
+      {
+        "image": "/images/content/88f21a5e715789cca3e90b3f43e703fed3baf146a14aa643ab484d8d3b3f5c6a.png",
+        "caption": ""
+      }
+    ]
   }
 ];
