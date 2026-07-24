@@ -30,13 +30,13 @@ export default function ArtPage() {
       {rows.map((row, rowIndex) => (
         <div className="art-row" key={`art-row-${rowIndex}`}>
           {row.map((item, index) => {
-            const widthNum = typeof item.width === 'number' ? item.width : Number(item.width);
-            const itemWidth = typeof widthNum === 'number' && !Number.isNaN(widthNum) && widthNum > 0 ? widthNum : 450;
+            const widthNum = Number(item.width);
+            const grow = Number.isFinite(widthNum) && widthNum > 0 ? widthNum : 450;
             return (
               <div
                 className="art-item"
                 key={`${item.image}-${index}`}
-                style={{ width: `${itemWidth}px` }}
+                style={{ '--art-grow': grow }}
               >
                 <button
                   type="button"

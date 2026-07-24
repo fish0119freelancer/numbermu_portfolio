@@ -381,12 +381,12 @@ function GalleryManager({
                 </div>
                 {fields.includes('width') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                    顯示寬度 (px)
+                    排列比例權重
                     <input
                       type="number"
                       value={item.width ?? ''}
                       onChange={(event) => updateNumericField(index, 'width', event.target.value)}
-                      placeholder="留空則自動使用 450"
+                      placeholder="留空 = 使用預設比例；會依整列寬度自動縮放"
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
                   </label>
@@ -613,7 +613,7 @@ function GalleryManager({
             </label>
             {fields.includes('width') && (
               <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                顯示寬度 (px)
+                排列比例權重
                 <input
                   type="number"
                   value={newItem.width ?? ''}
@@ -622,7 +622,7 @@ function GalleryManager({
                     const val = (raw === '' || raw === null || raw === undefined) ? undefined : (Number.isNaN(Number(raw)) ? undefined : Number(raw));
                     setNewItem((prev) => ({ ...prev, width: val }));
                   }}
-                  placeholder="留空則自動使用 450"
+                  placeholder="留空 = 使用預設比例；會依整列寬度自動縮放"
                   className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                 />
               </label>
@@ -1087,7 +1087,7 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Art 插畫集"
-          description="拖曳左側 # 把手調整順序。行號留空=自動每 3 張一列；填數字=手動指定列位。"
+          description="拖曳左側 # 把手調整順序。排列比例權重控制同列圖片的相對寬度；留空使用預設比例。行號留空=自動每 3 張一列；填數字=手動指定列位。"
           dataset={art}
           fields={['caption', 'width', 'row']}
         />

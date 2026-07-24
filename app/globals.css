@@ -166,32 +166,34 @@ main {
   display: flex;
   gap: 24px;
   margin-bottom: 36px;
+  width: 100%;
 }
 
 .art-item {
-  flex: 0 0 auto;
+  flex: var(--art-grow) 1 0;
+  min-width: 0;
+}
+
+.art-item button,
+.art-item img {
+  width: 100%;
 }
 
 .art-item img {
-  width: 100%;
   height: auto;
   display: block;
   background: #f5f5f5;
 }
 
-@media (max-width: 960px) {
-  .art-row {
-    flex-wrap: wrap;
-  }
-
-  .art-item {
-    width: calc(50% - 12px) !important;
-  }
-}
-
 @media (max-width: 640px) {
+  .art-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
   .art-item {
-    width: 100% !important;
+    flex: none;
+    width: 100%;
   }
 }
 
