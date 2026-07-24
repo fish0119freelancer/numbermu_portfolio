@@ -1,5 +1,12 @@
 export const artItems = [
   {
+    "image": "/images/content/b528a79c1e11c401e3641f31275da21059fd13a515459044f8a3306da468e87d.jpg",
+    "slug": "untitled-2",
+    "title": "",
+    "caption": "",
+    "href": ""
+  },
+  {
     "image": "/images/art/滿州國-1.jpg",
     "width": 453,
     "row": 0
@@ -280,13 +287,6 @@ export const artItems = [
     "image": "/images/art/71306604_p0-1.jpg",
     "width": 588,
     "row": 19
-  },
-  {
-    "image": "/images/content/0f5749747e19e3b4bac801391f1824fe97b7d0a031cc402c4b73fa20343ea988.png",
-    "slug": "untitled-2",
-    "title": "",
-    "caption": "",
-    "href": ""
   },
   {
     "image": "/images/art/78586535_p0-1.jpg",
