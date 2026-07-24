@@ -1,5 +1,12 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/433483795c89dd42e26f4f9af510f26945ae2a8e155bced74883c14b1d8c30bb.gif",
+    "slug": "untitled-5",
+    "title": "",
+    "caption": "",
+    "href": ""
+  },
+  {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
     "title": "Storm edge game character",
