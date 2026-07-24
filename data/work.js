@@ -1,6 +1,6 @@
 export const workItems = [
   {
-    "image": "/images/work/朝容-01-scaled.jpg",
+    "image": "/images/content/d48854ae36713bc4c3549f046fe6092421f2a58498c66322eeb85c29a1af53f4.jpg",
     "slug": "chao-jung-dental",
     "title": "朝容牙醫",
     "caption": "診所品牌識別與內部宣傳物設計。",
