@@ -86,8 +86,8 @@ export const artItems = [
     "width": 483
   },
   {
-    "image": "/images/art/zzcvb-01.jpg",
-    "width": 452
+    "image": "/images/art/c3dc4fc4725f4cad8ee5c09746c19d58-01-01-01-01.png",
+    "width": 345
   },
   {
     "image": "/images/art/L_motocompo_198111.jpg",
@@ -110,6 +110,10 @@ export const artItems = [
     "width": 416
   },
   {
+    "image": "/images/art/zzcvb-01.jpg",
+    "width": 452
+  },
+  {
     "image": "/images/art/IMG_2217-01-01.png",
     "width": 494
   },
@@ -120,10 +124,6 @@ export const artItems = [
   {
     "image": "/images/art/付咒2.jpg",
     "width": 559
-  },
-  {
-    "image": "/images/art/c3dc4fc4725f4cad8ee5c09746c19d58-01-01-01-01.png",
-    "width": 345
   },
   {
     "image": "/images/art/58235904_p0.jpg",
