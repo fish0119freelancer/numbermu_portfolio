@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/work', label: 'Work' },
   { href: '/art', label: 'Art' },
-  { href: '/', label: 'Gallery' },
+  { href: '/', label: 'Pixilart' },
   { href: '/type', label: 'Type' },
 ];
 
