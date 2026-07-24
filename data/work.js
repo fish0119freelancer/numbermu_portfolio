@@ -6,10 +6,6 @@ export const workItems = [
     "caption": "診所品牌識別與內部宣傳物設計。",
     "images": [
       {
-        "image": "/images/content/3f84e8b4935b9bbee5a9123afb7342400f4163faaecf376adfa02b11e34c5af0.jpg",
-        "caption": ""
-      },
-      {
         "image": "/images/content/6c900c9888ad22f8b5b80a8f969440668f227c123ae6ae1e9acc05e323fb1c65.jpg",
         "caption": ""
       },
