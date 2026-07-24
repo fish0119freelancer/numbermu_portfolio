@@ -6,7 +6,7 @@ export const workItems = [
     "caption": "以霓虹光感構成的 2024 年主題桌曆視覺。",
     "images": [
       {
-        "image": "/images/content/c5dd51329ae996b37b55cee30069df94691a9a36ed31cc1999551887530b9cae.png",
+        "image": "/images/content/c7688e4cbb60c4d764ae1634746f51a4522c6a583c858d9efe6b5d070e790715.png",
         "caption": ""
       },
       {
@@ -14,11 +14,7 @@ export const workItems = [
         "caption": ""
       },
       {
-        "image": "/images/content/c7688e4cbb60c4d764ae1634746f51a4522c6a583c858d9efe6b5d070e790715.png",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/9eabaf955a02811f7c2dad6070950c2c1e2d14ee237f18e39fc41368b1a5e9ed.png",
+        "image": "/images/content/c5dd51329ae996b37b55cee30069df94691a9a36ed31cc1999551887530b9cae.png",
         "caption": ""
       }
     ]
