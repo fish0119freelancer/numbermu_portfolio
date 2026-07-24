@@ -1,5 +1,27 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/54f5939536d4ecaa9be2984f1ad70c1196b35ead26a8b9526bff23040a88a557.gif",
+    "slug": "Storm-edge角色Character",
+    "title": "Storm edge/角色Character",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
+    "slug": "untitled-4",
+    "title": "Storm edge/角色Character",
+    "caption": "",
+    "href": ""
+  },
+  {
+    "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
+    "slug": "untitled-3",
+    "title": "Storm edge/角色Character",
+    "caption": "",
+    "href": ""
+  },
+  {
     "image": "/images/content/c19390b591854737f5a6ae60ce7e695dc741d02f1dbf973ba2d18f91391ea161.png",
     "slug": "untitled-2",
     "title": "Storm edge/道具icon",
@@ -26,20 +48,6 @@ export const pixilartItems = [
     "image": "/images/pixilart/migrated-20260720-pixilart-001-a0e6d1da.gif",
     "slug": "untitled",
     "title": "",
-    "caption": "",
-    "href": ""
-  },
-  {
-    "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
-    "slug": "untitled-4",
-    "title": "Storm edge/角色Character",
-    "caption": "",
-    "href": ""
-  },
-  {
-    "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
-    "slug": "untitled-3",
-    "title": "Storm edge/角色Character",
     "caption": "",
     "href": ""
   }
