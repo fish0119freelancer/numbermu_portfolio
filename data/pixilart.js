@@ -22,6 +22,14 @@ export const pixilartItems = [
     "href": ""
   },
   {
+    "image": "/images/content/b0220dc044f5c21aa07359d26cda28872938318271d071a41a3af94940d25fb8.gif",
+    "slug": "Storm-edge門animation",
+    "title": "Storm edge/門animation",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/c19390b591854737f5a6ae60ce7e695dc741d02f1dbf973ba2d18f91391ea161.png",
     "slug": "untitled-2",
     "title": "Storm edge/道具icon",
