@@ -1,89 +1,5 @@
 export const workItems = [
   {
-    "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
-    "slug": "live-commercial-real-estate",
-    "title": "住商不動產｜商用不動產視覺",
-    "caption": "為商用不動產品牌打造的識別與應用設計。",
-    "images": [
-      {
-        "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
-        "caption": ""
-      }
-    ]
-  },
-  {
-    "image": "/images/work/火花4.png",
-    "slug": "sparkle-2024-japan-calendar",
-    "title": "火花羅 | 2024年日本縱貫桌曆",
-    "caption": "以霓虹光感構成的 2024 年主題桌曆視覺。",
-    "images": [
-      {
-        "image": "/images/content/c5dd51329ae996b37b55cee30069df94691a9a36ed31cc1999551887530b9cae.png",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/e48ffb79a9b313a9b0fe86c333fc68b0e8519f495643a9f97b9d06e6d6ce0b89.png",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/c7688e4cbb60c4d764ae1634746f51a4522c6a583c858d9efe6b5d070e790715.png",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/9eabaf955a02811f7c2dad6070950c2c1e2d14ee237f18e39fc41368b1a5e9ed.png",
-        "caption": ""
-      }
-    ]
-  },
-  {
-    "image": "/images/work/中央3.png",
-    "slug": "ncu-learning-teaching-tshirt",
-    "title": "中央大學｜學習與教學研究所 T-Shirt",
-    "caption": "將研究所精神轉化為穿著識別的圖像敘事。"
-  },
-  {
-    "image": "/images/work/構音好好玩.jpg",
-    "slug": "articulation-fun",
-    "title": "構音好好玩",
-    "caption": "互動式語言學習教材的插畫與版面設計。"
-  },
-  {
-    "image": "/images/work/eater9.jpg",
-    "slug": "lotus-eater-commission",
-    "title": "Lotus Eater commission",
-    "caption": "來自洛杉磯獨立衣服店的委託。",
-    "images": [
-      {
-        "image": "/images/content/2fafc0b682bae1b54fdee081ec8f0e0e8fb96766814b6dc72f77bfdebe5b7624.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/200f64855f989b9fa27f0dcd040317809c595abdf48406ecdc72e572eb21054e.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/7a3fa2fe950dec1818529c80a5e82dc2f59b7e3274cdd4825520338eb55b6eb4.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/110b91bfacc2b7e783a096abe959bd1634e48b724e4e653b76bbf3d097d1c394.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/dd73b8605e10b973727a93c04522651e83d766b5a46ae21550b99233f2c92e44.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/7bbdc66ab7d2d314881aa8bda33154c4daf9b743971142d71f24ebdd12527f6e.jpg",
-        "caption": ""
-      },
-      {
-        "image": "/images/content/3e4fba3c973a6241447e5c97622932e8a9b1e024068d03ba263822723beeaaf4.jpg",
-        "caption": ""
-      }
-    ]
-  },
-  {
     "image": "/images/work/朝容-01-scaled.jpg",
     "slug": "chao-jung-dental",
     "title": "朝容牙醫",
@@ -127,6 +43,90 @@ export const workItems = [
       },
       {
         "image": "/images/content/88f21a5e715789cca3e90b3f43e703fed3baf146a14aa643ab484d8d3b3f5c6a.png",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
+    "slug": "live-commercial-real-estate",
+    "title": "住商不動產｜商用不動產視覺",
+    "caption": "為商用不動產品牌打造的識別與應用設計。",
+    "images": [
+      {
+        "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "image": "/images/work/eater9.jpg",
+    "slug": "lotus-eater-commission",
+    "title": "Lotus Eater commission",
+    "caption": "來自洛杉磯獨立衣服店的委託。",
+    "images": [
+      {
+        "image": "/images/content/2fafc0b682bae1b54fdee081ec8f0e0e8fb96766814b6dc72f77bfdebe5b7624.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/200f64855f989b9fa27f0dcd040317809c595abdf48406ecdc72e572eb21054e.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/7a3fa2fe950dec1818529c80a5e82dc2f59b7e3274cdd4825520338eb55b6eb4.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/110b91bfacc2b7e783a096abe959bd1634e48b724e4e653b76bbf3d097d1c394.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/dd73b8605e10b973727a93c04522651e83d766b5a46ae21550b99233f2c92e44.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/7bbdc66ab7d2d314881aa8bda33154c4daf9b743971142d71f24ebdd12527f6e.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/3e4fba3c973a6241447e5c97622932e8a9b1e024068d03ba263822723beeaaf4.jpg",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "image": "/images/work/中央3.png",
+    "slug": "ncu-learning-teaching-tshirt",
+    "title": "中央大學｜學習與教學研究所 T-Shirt",
+    "caption": "將研究所精神轉化為穿著識別的圖像敘事。"
+  },
+  {
+    "image": "/images/work/構音好好玩.jpg",
+    "slug": "articulation-fun",
+    "title": "構音好好玩",
+    "caption": "互動式語言學習教材的插畫與版面設計。"
+  },
+  {
+    "image": "/images/work/火花4.png",
+    "slug": "sparkle-2024-japan-calendar",
+    "title": "火花羅 | 2024年日本縱貫桌曆",
+    "caption": "以霓虹光感構成的 2024 年主題桌曆視覺。",
+    "images": [
+      {
+        "image": "/images/content/c5dd51329ae996b37b55cee30069df94691a9a36ed31cc1999551887530b9cae.png",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/e48ffb79a9b313a9b0fe86c333fc68b0e8519f495643a9f97b9d06e6d6ce0b89.png",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/c7688e4cbb60c4d764ae1634746f51a4522c6a583c858d9efe6b5d070e790715.png",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/9eabaf955a02811f7c2dad6070950c2c1e2d14ee237f18e39fc41368b1a5e9ed.png",
         "caption": ""
       }
     ]
