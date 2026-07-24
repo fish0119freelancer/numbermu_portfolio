@@ -282,6 +282,13 @@ export const artItems = [
     "row": 19
   },
   {
+    "image": "/images/content/0f5749747e19e3b4bac801391f1824fe97b7d0a031cc402c4b73fa20343ea988.png",
+    "slug": "untitled-2",
+    "title": "",
+    "caption": "",
+    "href": ""
+  },
+  {
     "image": "/images/art/78586535_p0-1.jpg",
     "width": 321,
     "row": 19
@@ -299,14 +306,6 @@ export const artItems = [
   {
     "image": "/images/art/66531189_2683867704970333_2345069499578843136_n.jpg",
     "width": 482,
-    "row": 20
-  },
-  {
-    "image": "/images/content/0f5749747e19e3b4bac801391f1824fe97b7d0a031cc402c4b73fa20343ea988.png",
-    "slug": "untitled-2",
-    "title": "",
-    "caption": "",
-    "href": "",
     "row": 20
   }
 ];
