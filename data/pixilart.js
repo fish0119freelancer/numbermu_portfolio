@@ -22,14 +22,6 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/de58da32eab8910271757272226e4fda96f404fccf14289fee1df63d818fd234.gif",
-    "slug": "untitled-10",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/b0220dc044f5c21aa07359d26cda28872938318271d071a41a3af94940d25fb8.gif",
     "slug": "Storm-edge門animation",
     "title": "Storm edge/門animation",
