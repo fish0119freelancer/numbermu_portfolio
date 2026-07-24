@@ -48,7 +48,7 @@ export const workItems = [
     ]
   },
   {
-    "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
+    "image": "/images/content/5e83f2564b5fc23219ddabb70d152abc68684e438ad023fcab0c8188ed783fd9.png",
     "slug": "live-commercial-real-estate",
     "title": "住商不動產｜商用不動產視覺",
     "caption": "為商用不動產品牌打造的識別與應用設計。",
