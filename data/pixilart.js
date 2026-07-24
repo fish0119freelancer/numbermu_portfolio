@@ -1,31 +1,24 @@
 export const pixilartItems = [
   {
-    "image": "/images/content/0620a582090cf4d9af90e86cda5bbafe6c1a0fa0935b08e96f1d25da61161971.png",
-    "slug": "untitled-7",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/707817f8528c37cfb32bcac6b4064e33ac767ef8c4d6a5208bbaf0cb71fa4b7f.png",
+    "image": "/images/content/78ddb2a675517a4659ace534d45b832e18ef0d80cfd393a5537ef02fe8e038ec.png",
     "slug": "untitled-5",
-    "title": "",
+    "title": "Storm edge/道具icon",
     "caption": "",
     "href": "",
     "breakBefore": false
   },
   {
-    "image": "/images/content/bbf95fb7741ef25251c43d1926d4feb20774e9abdda4a2bdd1a121df64f5c868.png",
+    "image": "/images/content/c19390b591854737f5a6ae60ce7e695dc741d02f1dbf973ba2d18f91391ea161.png",
     "slug": "untitled-2",
-    "title": "",
+    "title": "Storm edge/道具icon",
     "caption": "",
-    "href": ""
+    "href": "",
+    "breakBefore": false
   },
   {
     "image": "/images/content/ada7673de17586018d09e60c091a41f40ee4c749c4053afe2c491a90891d1bc1.gif",
     "slug": "untitled-6",
-    "title": "",
+    "title": "Storm edge/寶石動畫animation",
     "caption": "",
     "href": ""
   },
@@ -39,14 +32,14 @@ export const pixilartItems = [
   {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
-    "title": "Storm edge game character",
+    "title": "Storm edge/角色Character",
     "caption": "",
     "href": ""
   },
   {
     "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
     "slug": "untitled-3",
-    "title": "Storm edge game character",
+    "title": "Storm edge/角色Character",
     "caption": "",
     "href": ""
   }
