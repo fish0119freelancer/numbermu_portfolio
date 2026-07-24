@@ -8,18 +8,13 @@ export const profile = {
   ],
   "links": [
     {
-      "label": "Shopee",
-      "href": "https://shopee.tw/cksxxbe",
-      "description": "You can purchase merchandise from here."
-    },
-    {
       "label": "Itch.io",
       "href": "https://cksxxbe.itch.io/",
       "description": "About the game"
     },
     {
       "label": "Instagram",
-      "href": "https://www.instagram.com/",
+      "href": "https://www.instagram.com/cksxxbe/",
       "description": "sns"
     }
   ]
