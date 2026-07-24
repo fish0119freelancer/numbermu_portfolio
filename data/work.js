@@ -54,7 +54,7 @@ export const workItems = [
     "caption": "為商用不動產品牌打造的識別與應用設計。",
     "images": [
       {
-        "image": "/images/content/56ca531176bd20bd20891ae6f3a748f1ae1b3045a329c2eb51fb7cd050fafee4.jpg",
+        "image": "/images/content/9dc82ed2c9648a497fe4d2158c80bef4b5c08304e39ce13220cb23af9dfc5af8.png",
         "caption": ""
       }
     ]
