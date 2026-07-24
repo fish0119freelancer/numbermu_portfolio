@@ -1,29 +1,5 @@
 export const pixilartItems = [
   {
-    "image": "/images/content/5474d585c961c368a52755cd680084f6b81cc03b883cbf0b3f3c7d5e307c1d34.gif",
-    "slug": "untitled-9",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/191a6219911c36177eb6bf7fb5086e9cebd3980985a1bebbcdbb063d4858517b.gif",
-    "slug": "untitled-8",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/956b35167b94601230964dad847e00a091dceb14ea301c7c4f95da50a1948c20.gif",
-    "slug": "untitled-7",
-    "title": "",
-    "caption": "Storm edge/角色Character",
-    "href": "",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
     "title": "Storm edge/角色Character",
@@ -38,9 +14,33 @@ export const pixilartItems = [
     "href": ""
   },
   {
+    "image": "/images/content/956b35167b94601230964dad847e00a091dceb14ea301c7c4f95da50a1948c20.gif",
+    "slug": "untitled-7",
+    "title": "",
+    "caption": "Storm edge/角色Character",
+    "href": "",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/b0220dc044f5c21aa07359d26cda28872938318271d071a41a3af94940d25fb8.gif",
     "slug": "Storm-edge門animation",
     "title": "Storm edge/門animation",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/191a6219911c36177eb6bf7fb5086e9cebd3980985a1bebbcdbb063d4858517b.gif",
+    "slug": "untitled-8",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/5474d585c961c368a52755cd680084f6b81cc03b883cbf0b3f3c7d5e307c1d34.gif",
+    "slug": "untitled-9",
+    "title": "",
     "caption": "",
     "href": "",
     "breakBefore": false
