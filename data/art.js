@@ -186,8 +186,8 @@ export const artItems = [
     "width": 480
   },
   {
-    "image": "/images/art/b-b-63632275-p0-master1200.jpg",
-    "width": 330
+    "image": "/images/art/67228956_2683867774970326_6194536090121011200_n.jpg",
+    "width": 482
   },
   {
     "image": "/images/art/b-b-63902394-p0.jpg",
@@ -238,15 +238,11 @@ export const artItems = [
     "width": 321
   },
   {
+    "image": "/images/art/b-b-63632275-p0-master1200.jpg",
+    "width": 330
+  },
+  {
     "image": "/images/art/196243608_4483293275027758_4738817433941308372_n.jpg",
     "width": 440
-  },
-  {
-    "image": "/images/art/67228956_2683867774970326_6194536090121011200_n.jpg",
-    "width": 482
-  },
-  {
-    "image": "/images/art/66531189_2683867704970333_2345069499578843136_n.jpg",
-    "width": 482
   }
 ];
