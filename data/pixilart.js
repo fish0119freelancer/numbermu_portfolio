@@ -3,7 +3,7 @@ export const pixilartItems = [
     "image": "/images/content/bbf95fb7741ef25251c43d1926d4feb20774e9abdda4a2bdd1a121df64f5c868.png",
     "slug": "untitled-2",
     "title": "",
-    "caption": "",
+    "caption": "Storm edge/道具icon",
     "href": ""
   },
   {
@@ -23,15 +23,15 @@ export const pixilartItems = [
   {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
-    "title": "Storm edge game character",
-    "caption": "",
+    "title": "",
+    "caption": "Storm edge/角色Character",
     "href": ""
   },
   {
     "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
     "slug": "untitled-3",
     "title": "Storm edge game character",
-    "caption": "",
+    "caption": "Storm edge/角色Character",
     "href": ""
   }
 ];
