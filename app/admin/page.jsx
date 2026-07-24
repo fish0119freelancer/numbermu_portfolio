@@ -43,6 +43,9 @@ function GalleryManager({
   const [feedback, setFeedback] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [customMode, setCustomMode] = useState(false);
+  const isCustomMode = customMode || draft.some((item) => item.breakBefore === true);
+  const hasBreakBefore = fields.includes('breakBefore') || fields.includes('row');
 
   useEffect(() => {
     setDraft(dataset.items);
@@ -97,7 +100,14 @@ function GalleryManager({
   };
 
   const removeItem = (index) => {
-    setDraft((current) => current.filter((_, itemIndex) => itemIndex !== index));
+    setDraft((current) => {
+      const itemToRemove = current[index];
+      const next = current.filter((_, itemIndex) => itemIndex !== index);
+      if (itemToRemove?.breakBefore && index < next.length) {
+        next[index] = { ...next[index], breakBefore: true };
+      }
+      return next;
+    });
   };
 
   const reorderItem = (from, to) => {
@@ -120,8 +130,9 @@ function GalleryManager({
     });
   };
 
-  const clearAllRows = () => {
-    setDraft((current) => current.map((item) => ({ ...item, row: undefined })));
+  const clearAllBreaks = () => {
+    setDraft((current) => current.map((item) => ({ ...item, breakBefore: undefined, row: undefined })));
+    setCustomMode(false);
   };
 
   const normalizeImg = (img) =>
@@ -243,7 +254,7 @@ function GalleryManager({
         uniqueSlug = `${baseSlug}-${counter}`;
         counter += 1;
       }
-      return [{ ...newItem, slug: uniqueSlug }, ...current];
+      return [{ ...newItem, breakBefore: false, slug: uniqueSlug }, ...current];
     });
     setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
   };
@@ -278,14 +289,31 @@ function GalleryManager({
           >
             回復預設
           </button>
-          {fields.includes('row') && (
-            <button
-              type="button"
-              onClick={clearAllRows}
-              className="rounded-full border border-soft px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-accent/50 transition hover:bg-soft/40"
-            >
-              清除全行號
-            </button>
+          {hasBreakBefore && (
+            <div className="flex items-center gap-1 rounded-full border border-soft/60 bg-soft/20 p-1 text-[0.65rem] font-semibold">
+              <button
+                type="button"
+                onClick={clearAllBreaks}
+                className={`rounded-full px-3 py-1 transition ${
+                  !isCustomMode
+                    ? 'bg-accent text-white shadow-sm'
+                    : 'text-accent/60 hover:text-accent'
+                }`}
+              >
+                自動排列（每 3 張一列）
+              </button>
+              <button
+                type="button"
+                onClick={() => setCustomMode(true)}
+                className={`rounded-full px-3 py-1 transition ${
+                  isCustomMode
+                    ? 'bg-accent text-white shadow-sm'
+                    : 'text-accent/60 hover:text-accent'
+                }`}
+              >
+                自訂分列
+              </button>
+            </div>
           )}
           {feedback?.message && (
             <span
@@ -391,25 +419,17 @@ function GalleryManager({
                     />
                   </label>
                 )}
-                {fields.includes('row') && (
-                  <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                    排列行號（留空 = 自動依順序排列）
+                {hasBreakBefore && isCustomMode && index > 0 && (
+                  <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold tracking-[0.15em] text-accent/70">
                     <input
-                      type="number"
-                      value={item.row ?? ''}
-                      onChange={(event) => updateNumericField(index, 'row', event.target.value)}
-                      placeholder="留空 = 自動每 3 張一列；填數字 = 手動分組"
-                      className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                      type="checkbox"
+                      checked={Boolean(item.breakBefore)}
+                      onChange={(event) =>
+                        updateField(index, 'breakBefore', event.target.checked ? true : undefined)
+                      }
+                      className="h-4 w-4 rounded border-soft text-brand focus:ring-brand/40"
                     />
-                    {item.row !== undefined && (
-                      <button
-                        type="button"
-                        onClick={() => updateField(index, 'row', undefined)}
-                        className="mt-1 text-[0.6rem] text-accent/40 hover:text-accent/70"
-                      >
-                        清除此行號（改為自動排列）
-                      </button>
-                    )}
+                    <span>此圖開始新列</span>
                   </label>
                 )}
                 {fields.includes('title') && (
@@ -627,22 +647,7 @@ function GalleryManager({
                 />
               </label>
             )}
-            {fields.includes('row') && (
-              <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                排列行號（留空 = 自動依順序排列）
-                <input
-                  type="number"
-                  value={newItem.row ?? ''}
-                  onChange={(event) => {
-                    const raw = event.target.value;
-                    const val = (raw === '' || raw === null || raw === undefined) ? undefined : (Number.isNaN(Number(raw)) ? undefined : Number(raw));
-                    setNewItem((prev) => ({ ...prev, row: val }));
-                  }}
-                  placeholder="留空 = 自動每 3 張一列；填數字 = 手動分組"
-                  className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
-                />
-              </label>
-            )}
+
             {fields.includes('title') && (
               <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
                 標題
@@ -1087,9 +1092,9 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Art 插畫集"
-          description="拖曳左側 # 把手調整順序。排列比例權重控制同列圖片的相對寬度；留空使用預設比例。行號留空=自動每 3 張一列；填數字=手動指定列位。"
+          description="拖曳左側 # 把手調整順序。排列比例權重控制同列圖片的相對寬度；留空使用預設比例。預設為自動排列（每 3 張一列），可切換為自訂分列並勾選圖片開始新列。"
           dataset={art}
-          fields={['caption', 'width', 'row']}
+          fields={['caption', 'width', 'breakBefore']}
         />
         <GalleryManager
           commitOptions={commitOptions}

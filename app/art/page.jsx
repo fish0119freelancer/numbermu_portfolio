@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useEditableData } from '../_components/useEditableData';
 import { artItems } from '../../data/art';
 import Lightbox from '../_components/Lightbox';
+import { groupArtRows } from '../../lib/art-layout.mjs';
 
 export default function ArtPage() {
   const { items } = useEditableData('artItems', artItems);
@@ -15,15 +16,7 @@ export default function ArtPage() {
     alt: item.title || '',
   }));
 
-  const groupedRows = list.reduce((acc, item, index) => {
-    const rowIndex = typeof item.row === 'number' ? item.row : Math.floor(index / 3);
-    if (!acc[rowIndex]) {
-      acc[rowIndex] = [];
-    }
-    acc[rowIndex].push({ ...item, _flatIndex: index });
-    return acc;
-  }, []);
-  const rows = groupedRows.filter(Boolean);
+  const rows = groupArtRows(items);
 
   return (
     <section className="art-section">
