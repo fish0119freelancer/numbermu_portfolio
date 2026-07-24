@@ -57,7 +57,29 @@ export const workItems = [
     "image": "/images/work/朝容-01-scaled.jpg",
     "slug": "chao-jung-dental",
     "title": "朝容牙醫",
-    "caption": "診所品牌識別與內部宣傳物設計。"
+    "caption": "診所品牌識別與內部宣傳物設計。",
+    "images": [
+      {
+        "image": "/images/content/3f84e8b4935b9bbee5a9123afb7342400f4163faaecf376adfa02b11e34c5af0.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/6c900c9888ad22f8b5b80a8f969440668f227c123ae6ae1e9acc05e323fb1c65.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/219b94a4e5e19d7005921bf4f88d1bfa17a1c73412d30b1071ee579f30c3c6bb.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/6b740fb387377eae4ecf7870ec96d854537410e5259628446e5f22307e801ec2.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/915d49918fd6dd470344fd146751adc0173afe230225d28506766892ff85f690.jpg",
+        "caption": ""
+      }
+    ]
   },
   {
     "image": "/images/work/photo_2024-10-06_01-12-50.jpg",
@@ -65,6 +87,14 @@ export const workItems = [
     "title": "姆咪重工",
     "caption": "個人品牌側寫，延續原站的首篇文章封面。",
     "images": [
+      {
+        "image": "/images/content/e0ce5d2de488278edcb5249cb0e05857b77e944c351c7dcb59ad9de9e0afda09.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/264676c41e0d52e2222ad8110332244763cbc8e0facf392c164eb0834a3833f9.jpg",
+        "caption": ""
+      },
       {
         "image": "/images/content/88f21a5e715789cca3e90b3f43e703fed3baf146a14aa643ab484d8d3b3f5c6a.png",
         "caption": ""
