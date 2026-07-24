@@ -51,7 +51,37 @@ export const workItems = [
     "image": "/images/work/eater9.jpg",
     "slug": "lotus-eater-commission",
     "title": "Lotus Eater commission",
-    "caption": "以夢境題材延伸的角色委託插畫。"
+    "caption": "來自洛杉磯獨立衣服店的委託。",
+    "images": [
+      {
+        "image": "/images/content/2fafc0b682bae1b54fdee081ec8f0e0e8fb96766814b6dc72f77bfdebe5b7624.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/200f64855f989b9fa27f0dcd040317809c595abdf48406ecdc72e572eb21054e.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/7a3fa2fe950dec1818529c80a5e82dc2f59b7e3274cdd4825520338eb55b6eb4.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/110b91bfacc2b7e783a096abe959bd1634e48b724e4e653b76bbf3d097d1c394.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/dd73b8605e10b973727a93c04522651e83d766b5a46ae21550b99233f2c92e44.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/7bbdc66ab7d2d314881aa8bda33154c4daf9b743971142d71f24ebdd12527f6e.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/3e4fba3c973a6241447e5c97622932e8a9b1e024068d03ba263822723beeaaf4.jpg",
+        "caption": ""
+      }
+    ]
   },
   {
     "image": "/images/work/朝容-01-scaled.jpg",
@@ -85,7 +115,7 @@ export const workItems = [
     "image": "/images/work/photo_2024-10-06_01-12-50.jpg",
     "slug": "mumu-heavy-industry",
     "title": "姆咪重工",
-    "caption": "個人品牌側寫，延續原站的首篇文章封面。",
+    "caption": "貼紙店的品牌識別。",
     "images": [
       {
         "image": "/images/content/e0ce5d2de488278edcb5249cb0e05857b77e944c351c7dcb59ad9de9e0afda09.jpg",
