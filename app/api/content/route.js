@@ -447,12 +447,14 @@ export async function POST(request) {
           const combined = `${error.stderr || ''}${error.stdout || ''}`;
           if (combined.includes('fetch first') || combined.includes('stale info')) {
             // Retry must fetch through the SAME authenticated target (a bare
-            // remote name would fail on a private HTTPS repo), then fast-forward
-            // onto what we actually fetched (FETCH_HEAD), not a stale tracking ref.
+            // remote name would fail on a private HTTPS repo), then rebase our
+            // content commit on top of whatever landed concurrently (e.g. a code
+            // push from the dev machine). merge --ff-only would reject diverged
+            // history; rebase replays our commit cleanly.
             await runGit(['fetch', target, defaultBranch], gitLogs, {
               label: `fetch ${label} ${defaultBranch}`,
             });
-            await runGit(['merge', '--ff-only', 'FETCH_HEAD'], gitLogs);
+            await runGit(['rebase', 'FETCH_HEAD'], gitLogs);
             await runGit(pushArgs, gitLogs, { label: pushLabel });
             pushed = true;
           } else {
