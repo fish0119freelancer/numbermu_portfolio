@@ -195,72 +195,58 @@ export const artItems = [
   },
   {
     "image": "/images/art/b-b-63192171-p0.jpg",
-    "width": 361,
-    "row": 15
+    "width": 361
   },
   {
     "image": "/images/art/b-b-32646835-2001816609842116-7694746219330928640-n.jpg",
-    "width": 612,
-    "row": 15
+    "width": 612
   },
   {
     "image": "/images/art/b-b-yan.jpg",
-    "width": 753,
-    "row": 16
+    "width": 753
   },
   {
     "image": "/images/art/b-b-64560870-p0.jpg",
-    "width": 618,
-    "row": 16
+    "width": 618
   },
   {
     "image": "/images/art/b-b-1.jpg",
-    "width": 846,
-    "row": 17
+    "width": 846
   },
   {
     "image": "/images/art/b-b-68977853-p0.jpg",
-    "width": 525,
-    "row": 17
+    "width": 525
   },
   {
     "image": "/images/art/118766340_3685827781440982_7821879441740635085_n.jpg",
-    "width": 484,
-    "row": 18
+    "width": 484
   },
   {
     "image": "/images/art/79500488_2993290390694728_6220312989182984192_n.jpg",
-    "width": 538,
-    "row": 18
+    "width": 538
   },
   {
     "image": "/images/art/481057102_1042092627951296_5239867692697136284_n.jpg",
-    "width": 326,
-    "row": 18
+    "width": 326
   },
   {
     "image": "/images/art/71306604_p0-1.jpg",
-    "width": 588,
-    "row": 19
+    "width": 588
   },
   {
     "image": "/images/art/78586535_p0-1.jpg",
-    "width": 321,
-    "row": 19
+    "width": 321
   },
   {
     "image": "/images/art/196243608_4483293275027758_4738817433941308372_n.jpg",
-    "width": 440,
-    "row": 19
+    "width": 440
   },
   {
     "image": "/images/art/67228956_2683867774970326_6194536090121011200_n.jpg",
-    "width": 482,
-    "row": 20
+    "width": 482
   },
   {
     "image": "/images/art/66531189_2683867704970333_2345069499578843136_n.jpg",
-    "width": 482,
-    "row": 20
+    "width": 482
   }
 ];
