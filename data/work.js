@@ -99,7 +99,17 @@ export const workItems = [
     "image": "/images/work/中央3.png",
     "slug": "ncu-learning-teaching-tshirt",
     "title": "中央大學｜學習與教學研究所 T-Shirt",
-    "caption": "將研究所精神轉化為穿著識別的圖像敘事。"
+    "caption": "將研究所精神轉化為穿著識別的圖像敘事。",
+    "images": [
+      {
+        "image": "/images/content/b682da4f6ddd8ff68f0f4abd831b1cfba51c09d87438c6bee317b46d33e14b46.png",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/5a104ad77fb2a5ac632860f32011e75f72edfd91051c2923794e3f836339ecc6.png",
+        "caption": ""
+      }
+    ]
   },
   {
     "image": "/images/work/構音好好玩.jpg",
