@@ -7,20 +7,6 @@ export const pixilartItems = [
     "href": ""
   },
   {
-    "image": "/images/content/aaa58e73a09f7f02a66609bb500c93ea96c516708f3fbd97a051adee8c0293fd.png",
-    "slug": "untitled-7",
-    "title": "",
-    "caption": "",
-    "href": ""
-  },
-  {
-    "image": "/images/content/21647f2fb5f6960b05386517f5f6bc52253fd00d1f169feeaca400d28910f02d.png",
-    "slug": "untitled-5",
-    "title": "",
-    "caption": "",
-    "href": ""
-  },
-  {
     "image": "/images/content/ada7673de17586018d09e60c091a41f40ee4c749c4053afe2c491a90891d1bc1.gif",
     "slug": "untitled-6",
     "title": "",
