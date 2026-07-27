@@ -1,9 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import PageHeader from '../_components/PageHeader';
 import { useEditableData } from '../_components/useEditableData';
+import {
+  describeSaveResult,
+  IMAGE_ACCEPT,
+  validateImageFile,
+  waitForDeployment,
+} from '../../lib/admin-client.mjs';
 import { pixilartItems as defaultPixilart } from '../../data/pixilart';
 import { artItems as defaultArt } from '../../data/art';
 import { typeItems as defaultType } from '../../data/type';
@@ -17,6 +23,31 @@ const toDataUrl = (file) =>
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+
+const readImageFile = async (file) => {
+  const validation = validateImageFile(file);
+  if (!validation.ok) throw new Error(validation.message);
+  return toDataUrl(file);
+};
+
+const reportSaveOutcome = async (result, setFeedback) => {
+  setFeedback(describeSaveResult(result));
+  if (result?.status !== 'saved' || !result?.commitSha) return;
+
+  const deployment = await waitForDeployment(result.commitSha);
+  setFeedback(
+    deployment.deployed
+      ? {
+          type: 'success',
+          message: 'GitHub 與 Render 都已更新，公開網站現在是最新版本。',
+        }
+      : {
+          type: 'warning',
+          message:
+            '內容已保存到 GitHub，但等待 Render 更新逾時；請稍後按「重新載入 GitHub」確認，或通知管理者查看部署紀錄。',
+        },
+  );
+};
 
 const slugify = (text) => {
   const cleaned = (text || '')
@@ -44,10 +75,15 @@ function GalleryManager({
   const [dragIndex, setDragIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [customMode, setCustomMode] = useState(false);
+  const preserveDraftOnNextRemote = useRef(false);
   const isCustomMode = customMode || draft.some((item) => item.breakBefore === true);
   const hasBreakBefore = fields.includes('breakBefore') || fields.includes('row');
 
   useEffect(() => {
+    if (preserveDraftOnNextRemote.current) {
+      preserveDraftOnNextRemote.current = false;
+      return;
+    }
     setDraft(dataset.items);
   }, [dataset.items]);
 
@@ -92,10 +128,10 @@ function GalleryManager({
 
   const replaceImage = async (index, file) => {
     try {
-      const dataUrl = await toDataUrl(file);
+      const dataUrl = await readImageFile(file);
       updateField(index, 'image', dataUrl);
     } catch (error) {
-      console.error('failed to read file', error);
+      setFeedback({ type: 'error', message: error.message });
     }
   };
 
@@ -187,10 +223,10 @@ function GalleryManager({
 
   const handleItemImageFile = async (index, file) => {
     try {
-      const dataUrl = await toDataUrl(file);
+      const dataUrl = await readImageFile(file);
       addItemImage(index, dataUrl);
     } catch (error) {
-      console.error('failed to read file', error);
+      setFeedback({ type: 'error', message: error.message });
     }
   };
 
@@ -212,14 +248,12 @@ function GalleryManager({
     setFeedback({ type: 'info', message: 'Saving changes...' });
     try {
       const result = await dataset.setItems(draft, commitOptions);
-      setFeedback({
-        type: 'success',
-        message: result?.message || 'Content synced and committed.',
-      });
+      await reportSaveOutcome(result, setFeedback);
     } catch (error) {
       setFeedback({
         type: 'error',
         message: error?.message || 'Update failed, please try again later.',
+        action: error?.isConflict ? 'reload' : undefined,
       });
     } finally {
       setSaving(false);
@@ -231,15 +265,34 @@ function GalleryManager({
   };
 
   const resetToDefault = () => {
-    dataset.reset();
+    setDraft(dataset.reset());
+    setFeedback({
+      type: 'info',
+      message: '已載入預設內容；按「套用變更」後才會儲存。',
+    });
+  };
+
+  const reloadAfterConflict = async () => {
+    preserveDraftOnNextRemote.current = true;
+    setFeedback({ type: 'info', message: '正在載入 GitHub 最新版本…' });
+    try {
+      await dataset.reload(commitOptions);
+      setFeedback({
+        type: 'info',
+        message: '已更新版本基準並保留目前草稿；確認內容後可再次儲存。',
+      });
+    } catch (error) {
+      preserveDraftOnNextRemote.current = false;
+      setFeedback({ type: 'error', message: error.message });
+    }
   };
 
   const handleNewItemFile = async (file) => {
     try {
-      const dataUrl = await toDataUrl(file);
+      const dataUrl = await readImageFile(file);
       setNewItem((prev) => ({ ...prev, image: dataUrl }));
     } catch (error) {
-      console.error('failed to read file', error);
+      setFeedback({ type: 'error', message: error.message });
     }
   };
 
@@ -317,16 +370,29 @@ function GalleryManager({
           )}
           {feedback?.message && (
             <span
+              role={feedback.type === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
               className={`text-[0.65rem] font-medium tracking-[0.2em] ${
                 feedback.type === 'error'
                   ? 'text-red-500'
                   : feedback.type === 'success'
                   ? 'text-brand'
+                  : feedback.type === 'warning'
+                  ? 'text-amber-700'
                   : 'text-accent/50'
               }`}
             >
               {feedback.message}
             </span>
+          )}
+          {feedback?.action === 'reload' && (
+            <button
+              type="button"
+              onClick={reloadAfterConflict}
+              className="rounded-full border border-brand/40 px-3 py-2 font-semibold text-brand transition hover:bg-brand/10"
+            >
+              載入最新版並保留草稿
+            </button>
           )}
         </div>
       </div>
@@ -382,7 +448,7 @@ function GalleryManager({
                 重新上傳
                 <input
                   type="file"
-                  accept="image/*"
+                  accept={IMAGE_ACCEPT}
                   className="hidden"
                   onChange={(event) => {
                     const file = event.target.files?.[0];
@@ -562,7 +628,7 @@ function GalleryManager({
                       上傳圖片
                       <input
                         type="file"
-                        accept="image/*"
+                        accept={IMAGE_ACCEPT}
                         className="hidden"
                         onChange={(event) => {
                           const file = event.target.files?.[0];
@@ -599,6 +665,9 @@ function GalleryManager({
 
       <div className="mt-8 rounded-2xl border border-dashed border-soft/80 p-4">
         <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-accent">新增項目</h3>
+        <p className="mt-2 text-xs leading-relaxed text-accent/60">
+          支援 PNG、JPEG、GIF、WebP；單張最多 4 MiB，每次儲存的圖片總量最多 12 MiB。
+        </p>
         <div className="mt-4 grid gap-4 md:grid-cols-[160px,1fr]">
           <label className="flex flex-col gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-accent/70">
             圖片預覽
@@ -611,7 +680,7 @@ function GalleryManager({
             )}
             <input
               type="file"
-              accept="image/*"
+              accept={IMAGE_ACCEPT}
               onChange={(event) => {
                 const file = event.target.files?.[0];
                 if (file) {
@@ -732,8 +801,13 @@ function ProfileEditor({ dataset, commitOptions }) {
   const [linkDraft, setLinkDraft] = useState(dataset.items?.links || []);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const preserveDraftOnNextRemote = useRef(false);
 
   useEffect(() => {
+    if (preserveDraftOnNextRemote.current) {
+      preserveDraftOnNextRemote.current = false;
+      return;
+    }
     setDraft(dataset.items);
     setLinkDraft(dataset.items?.links || []);
   }, [dataset.items]);
@@ -776,14 +850,12 @@ function ProfileEditor({ dataset, commitOptions }) {
     setFeedback({ type: 'info', message: 'Saving profile...' });
     try {
       const result = await dataset.setItems(next, commitOptions);
-      setFeedback({
-        type: 'success',
-        message: result?.message || 'Profile synced and committed.',
-      });
+      await reportSaveOutcome(result, setFeedback);
     } catch (error) {
       setFeedback({
         type: 'error',
         message: error?.message || 'Update failed, please try again later.',
+        action: error?.isConflict ? 'reload' : undefined,
       });
     } finally {
       setSaving(false);
@@ -796,15 +868,36 @@ function ProfileEditor({ dataset, commitOptions }) {
   };
 
   const resetToDefault = () => {
-    dataset.reset();
+    const defaults = dataset.reset();
+    setDraft(defaults);
+    setLinkDraft(defaults?.links || []);
+    setFeedback({
+      type: 'info',
+      message: '已載入預設內容；按「套用變更」後才會儲存。',
+    });
+  };
+
+  const reloadAfterConflict = async () => {
+    preserveDraftOnNextRemote.current = true;
+    setFeedback({ type: 'info', message: '正在載入 GitHub 最新版本…' });
+    try {
+      await dataset.reload(commitOptions);
+      setFeedback({
+        type: 'info',
+        message: '已更新版本基準並保留目前草稿；確認內容後可再次儲存。',
+      });
+    } catch (error) {
+      preserveDraftOnNextRemote.current = false;
+      setFeedback({ type: 'error', message: error.message });
+    }
   };
 
   const handleAvatar = async (file) => {
     try {
-      const dataUrl = await toDataUrl(file);
+      const dataUrl = await readImageFile(file);
       updateField('avatar', dataUrl);
     } catch (error) {
-      console.error('failed to read file', error);
+      setFeedback({ type: 'error', message: error.message });
     }
   };
 
@@ -840,10 +933,21 @@ function ProfileEditor({ dataset, commitOptions }) {
           </button>
           {feedback?.message && (
             <span
-              className={`text-[0.65rem] font-medium tracking-[0.2em] ${feedback.type === 'error' ? 'text-red-500' : feedback.type === 'success' ? 'text-brand' : 'text-accent/50'}`}
+              role={feedback.type === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
+              className={`text-[0.65rem] font-medium tracking-[0.2em] ${feedback.type === 'error' ? 'text-red-500' : feedback.type === 'success' ? 'text-brand' : feedback.type === 'warning' ? 'text-amber-700' : 'text-accent/50'}`}
             >
               {feedback.message}
             </span>
+          )}
+          {feedback?.action === 'reload' && (
+            <button
+              type="button"
+              onClick={reloadAfterConflict}
+              className="rounded-full border border-brand/40 px-3 py-2 font-semibold text-brand transition hover:bg-brand/10"
+            >
+              載入最新版並保留草稿
+            </button>
           )}
         </div>
       </div>
@@ -860,7 +964,7 @@ function ProfileEditor({ dataset, commitOptions }) {
           )}
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(event) => {
               const file = event.target.files?.[0];
               if (file) {
@@ -869,6 +973,9 @@ function ProfileEditor({ dataset, commitOptions }) {
               }
             }}
           />
+          <span className="normal-case tracking-normal text-accent/50">
+            PNG、JPEG、GIF、WebP；最多 4 MiB。
+          </span>
           <input
             value={draft?.avatar || ''}
             onChange={(event) => updateField('avatar', event.target.value)}
@@ -970,14 +1077,27 @@ function ProfileEditor({ dataset, commitOptions }) {
 }
 
 export default function AdminPage() {
-  const pixilart = useEditableData('pixilartItems', defaultPixilart);
-  const art = useEditableData('artItems', defaultArt);
-  const type = useEditableData('typeItems', defaultType);
-  const work = useEditableData('workItems', defaultWork);
-  const profile = useEditableData('profileData', defaultProfile, 'object');
-
   const [authToken, setAuthToken] = useState('');
   const [commitMessage, setCommitMessage] = useState('');
+  const editorConfig = useMemo(
+    () => ({ token: authToken || undefined }),
+    [authToken],
+  );
+  const pixilart = useEditableData(
+    'pixilartItems',
+    defaultPixilart,
+    'array',
+    editorConfig,
+  );
+  const art = useEditableData('artItems', defaultArt, 'array', editorConfig);
+  const type = useEditableData('typeItems', defaultType, 'array', editorConfig);
+  const work = useEditableData('workItems', defaultWork, 'array', editorConfig);
+  const profile = useEditableData(
+    'profileData',
+    defaultProfile,
+    'object',
+    editorConfig,
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -1011,12 +1131,27 @@ export default function AdminPage() {
     }
   };
 
-  const commitOptions = {
-    token: authToken || undefined,
-    commitMessage,
-  };
+  const commitOptions = useMemo(
+    () => ({
+      token: authToken || undefined,
+      commitMessage,
+    }),
+    [authToken, commitMessage],
+  );
 
   const hasToken = Boolean(authToken.trim());
+  const datasets = [pixilart, art, type, work, profile];
+  const loadingRemote = datasets.some((dataset) => dataset.loading);
+  const remoteError = datasets.find((dataset) => dataset.loadError)?.loadError;
+
+  const reloadRemote = async () => {
+    if (!hasToken || loadingRemote) return;
+    try {
+      await pixilart.reload({ token: authToken, replaceAll: true });
+    } catch {
+      // The hook exposes the actionable error below while keeping all drafts intact.
+    }
+  };
 
 
   return (
@@ -1064,14 +1199,32 @@ export default function AdminPage() {
               {hasToken ? 'Token Ready' : 'Token Missing'}
             </span>
             <span className="text-accent/40">請確認欄位與伺服器的 ADMIN_API_TOKEN 相同。</span>
+            <button
+              type="button"
+              onClick={reloadRemote}
+              disabled={!hasToken || loadingRemote}
+              className="rounded-full border border-soft px-3 py-2 font-semibold text-accent/70 transition hover:bg-soft/60 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {loadingRemote ? '載入 GitHub 中…' : '重新載入 GitHub'}
+            </button>
           </div>
+          {remoteError && (
+            <p
+              role="alert"
+              aria-live="polite"
+              className="mt-3 text-sm leading-relaxed text-red-600"
+            >
+              {remoteError.message}
+            </p>
+          )}
         </div>
         <div className="rounded-3xl border border-dashed border-brand/40 bg-brand/5 p-6 text-sm leading-relaxed text-accent/80">
           <p className="font-semibold text-accent">使用說明</p>
           <ul className="mt-3 list-disc space-y-2 pl-5">
             <li>調整內容後，請按「套用變更」。</li>
-            <li>顯示成功訊息後約 1 分鐘，網站會自動更新。</li>
-            <li>若遇到錯誤或網站沒有變動，請再試一次或通知管理者。</li>
+            <li>儲存成功代表 GitHub 已更新；Render 完成部署後公開網站才會更新。</li>
+            <li>若顯示版本衝突，先載入最新版；系統會保留目前草稿。</li>
+            <li>圖片支援 PNG、JPEG、GIF、WebP，單張最多 4 MiB。</li>
           </ul>
         </div>
         <GalleryManager

@@ -8,14 +8,6 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/c96e652dae935062c6d8cbb6bd5a98efc8f8f29e1a9f95a172d0322ac794f235.jpg",
-    "slug": "untitled-11",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/7ca70f28fad61551726fde67fc2d6a5a13cf2d6dc209784ba770f4bc952d062e.gif",
     "slug": "untitled-10",
     "title": "",

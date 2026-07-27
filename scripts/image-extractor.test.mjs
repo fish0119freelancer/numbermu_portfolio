@@ -7,7 +7,10 @@ import { extractImagesFromPayload } from '../lib/image-extractor.mjs';
 
 const PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 const PNG_BYTES = Buffer.from(PNG_BASE64, 'base64');
-const JPEG_BYTES = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00]);
+const JPEG_BYTES = Buffer.from([
+  0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x08, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x00,
+  0xFF, 0xD9,
+]);
 const GIF_BYTES = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64');
 const WEBP_BYTES = Buffer.from('UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAQAcJaQAA3AA/v3AgAA=', 'base64');
 
@@ -129,5 +132,25 @@ describe('image-extractor module', () => {
     assert.equal(result.imageFiles.length, 2);
     assert.equal(result.imageFiles[0].ext, 'gif');
     assert.equal(result.imageFiles[1].ext, 'webp');
+  });
+
+  test('14. Truncated containers with only magic bytes are rejected', () => {
+    const truncated = {
+      png: Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]),
+      jpeg: Buffer.from([0xFF, 0xD8, 0xFF]),
+      gif: Buffer.from('GIF'),
+      webp: Buffer.from('RIFF0000WEBP'),
+    };
+
+    for (const [kind, bytes] of Object.entries(truncated)) {
+      const mime = kind === 'jpeg' ? 'image/jpeg' : `image/${kind}`;
+      assert.throws(
+        () =>
+          extractImagesFromPayload({
+            image: `data:${mime};base64,${bytes.toString('base64')}`,
+          }),
+        /Magic bytes mismatch/,
+      );
+    }
   });
 });

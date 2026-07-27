@@ -1,0 +1,9 @@
+.next/
+node_modules/
+out/
+server/
+static/
+types/
+app-build-manifest.json
+build-manifest.json
+react-loadable-manifest.json

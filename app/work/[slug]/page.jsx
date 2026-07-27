@@ -1,5 +1,6 @@
 import { workItems } from '../../../data/work';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import WorkGallery from '../../_components/WorkGallery';
 
 export function generateStaticParams() {
@@ -10,24 +11,12 @@ export function generateStaticParams() {
     }));
 }
 
-export default function WorkDetailPage({ params }) {
-  const item = workItems.find((w) => w.slug === params.slug);
+export default async function WorkDetailPage({ params }) {
+  const { slug } = await params;
+  const item = workItems.find((w) => w.slug === slug);
 
   if (!item) {
-    return (
-      <section className="section-wrapper">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-2xl font-semibold text-accent">找不到此作品</h1>
-          <p className="mt-4 text-accent/70">請確認網址是否正確。</p>
-          <Link
-            href="/work"
-            className="mt-6 inline-block rounded-full bg-accent px-6 py-2 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-accent/80"
-          >
-            返回作品集
-          </Link>
-        </div>
-      </section>
-    );
+    notFound();
   }
 
   return (
