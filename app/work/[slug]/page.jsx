@@ -40,8 +40,8 @@ export default async function WorkDetailPage({ params }) {
           返回作品集
         </Link>
 
-        {/* Cover + project detail images */}
-        <WorkGallery cover={item.image} full={item.full} title={item.title} images={item.images} />
+        {/* Project detail images (cover is list-thumbnail only) */}
+        <WorkGallery title={item.title} images={item.images} />
 
         {/* Title & caption */}
         <div className="mt-8 space-y-4">

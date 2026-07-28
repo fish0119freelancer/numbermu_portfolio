@@ -135,15 +135,6 @@ function GalleryManager({
     }
   };
 
-  const replaceFullImage = async (index, file) => {
-    try {
-      const dataUrl = await readImageFile(file);
-      updateField(index, 'full', dataUrl);
-    } catch (error) {
-      setFeedback({ type: 'error', message: error.message });
-    }
-  };
-
   const removeItem = (index) => {
     setDraft((current) => {
       const itemToRemove = current[index];
@@ -542,34 +533,6 @@ function GalleryManager({
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
                   </label>
-                )}
-                {fields.includes('full') && (
-                  <div className="sm:col-span-2 space-y-2">
-                    <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
-                      詳細頁原圖（留空 = 沿用封面圖）
-                      <input
-                        value={item.full || ''}
-                        onChange={(event) => updateField(index, 'full', event.target.value)}
-                        placeholder="高解析度原圖；封面可繼續用壓縮版"
-                        className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
-                      />
-                    </label>
-                    <label className="inline-flex cursor-pointer items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-accent/70">
-                      上傳原圖
-                      <input
-                        type="file"
-                        accept={IMAGE_ACCEPT}
-                        className="hidden"
-                        onChange={(event) => {
-                          const file = event.target.files?.[0];
-                          if (file) {
-                            replaceFullImage(index, file);
-                            event.target.value = '';
-                          }
-                        }}
-                      />
-                    </label>
-                  </div>
                 )}
                 {fields.includes('slug') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
@@ -1302,7 +1265,7 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Work 作品集"
-          description="管理案例如需連結至原始文章，可設定標題、說明與外部連結。"
+          description="管理案例如需連結至原始文章，可設定標題、說明與外部連結。封面僅用於列表縮圖；點進作品後顯示的是下方「詳細圖片」。"
           dataset={work}
           fields={['title', 'slug', 'caption']}
           showLink
