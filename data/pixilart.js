@@ -1,5 +1,14 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/111567cc471b86380bcf2831b872d320162c899891916e997df173f2229b0b31.png",
+    "slug": "untitled-19",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/5fb0ea434f15af01f64d6538090cfc33ecfd2f442610f0763917ea327453d4e4.png",
     "slug": "untitled-18",
     "title": "",
