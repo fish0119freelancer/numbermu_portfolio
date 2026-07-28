@@ -41,7 +41,7 @@ export default async function WorkDetailPage({ params }) {
         </Link>
 
         {/* Cover + project detail images */}
-        <WorkGallery cover={item.image} title={item.title} images={item.images} />
+        <WorkGallery cover={item.image} full={item.full} title={item.title} images={item.images} />
 
         {/* Title & caption */}
         <div className="mt-8 space-y-4">

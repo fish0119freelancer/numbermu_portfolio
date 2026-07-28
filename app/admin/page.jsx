@@ -69,7 +69,7 @@ function GalleryManager({
   commitOptions,
 }) {
   const [draft, setDraft] = useState(dataset.items);
-  const [newItem, setNewItem] = useState({ image: '', title: '', slug: '', caption: '', href: '' });
+  const [newItem, setNewItem] = useState({ image: '', title: '', slug: '', caption: '', href: '', category: '' });
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
@@ -130,6 +130,15 @@ function GalleryManager({
     try {
       const dataUrl = await readImageFile(file);
       updateField(index, 'image', dataUrl);
+    } catch (error) {
+      setFeedback({ type: 'error', message: error.message });
+    }
+  };
+
+  const replaceFullImage = async (index, file) => {
+    try {
+      const dataUrl = await readImageFile(file);
+      updateField(index, 'full', dataUrl);
     } catch (error) {
       setFeedback({ type: 'error', message: error.message });
     }
@@ -309,11 +318,16 @@ function GalleryManager({
       }
       return [{ ...newItem, breakBefore: false, slug: uniqueSlug }, ...current];
     });
-    setNewItem({ image: '', title: '', slug: '', caption: '', href: '' });
+    setNewItem({ image: '', title: '', slug: '', caption: '', href: '', category: '' });
   };
+
+  const categoryOptions = [...new Set(draft.map(i => i.category).filter(Boolean))];
 
   return (
     <section className="rounded-3xl border border-soft/60 bg-white p-6 shadow-sm">
+      <datalist id={`category-options-${title}`}>
+        {categoryOptions.map(cat => <option key={cat} value={cat} />)}
+      </datalist>
       <div className="flex flex-col gap-3 border-b border-soft/40 pb-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-accent">{title}</h2>
@@ -516,6 +530,46 @@ function GalleryManager({
                       className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                     />
                   </label>
+                )}
+                {fields.includes('category') && (
+                  <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                    分類
+                    <input
+                      value={item.category || ''}
+                      onChange={(event) => updateField(index, 'category', event.target.value)}
+                      placeholder="例如：角色、地圖、介面（留空 = 未分類）"
+                      list={`category-options-${title}`}
+                      className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                    />
+                  </label>
+                )}
+                {fields.includes('full') && (
+                  <div className="sm:col-span-2 space-y-2">
+                    <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                      詳細頁原圖（留空 = 沿用封面圖）
+                      <input
+                        value={item.full || ''}
+                        onChange={(event) => updateField(index, 'full', event.target.value)}
+                        placeholder="高解析度原圖；封面可繼續用壓縮版"
+                        className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                      />
+                    </label>
+                    <label className="inline-flex cursor-pointer items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-accent/70">
+                      上傳原圖
+                      <input
+                        type="file"
+                        accept={IMAGE_ACCEPT}
+                        className="hidden"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            replaceFullImage(index, file);
+                            event.target.value = '';
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
                 )}
                 {fields.includes('slug') && (
                   <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
@@ -742,6 +796,18 @@ function GalleryManager({
                       return { ...prev, title: newTitle };
                     });
                   }}
+                  className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
+                />
+              </label>
+            )}
+            {fields.includes('category') && (
+              <label className="block text-xs font-semibold uppercase tracking-[0.35em] text-accent/60">
+                分類
+                <input
+                  value={newItem.category || ''}
+                  onChange={(event) => setNewItem((prev) => ({ ...prev, category: event.target.value }))}
+                  placeholder="例如：角色、地圖、介面（留空 = 未分類）"
+                  list={`category-options-${title}`}
                   className="mt-2 w-full rounded-xl border border-soft px-3 py-2 text-sm text-accent focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand/40"
                 />
               </label>

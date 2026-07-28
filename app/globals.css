@@ -131,10 +131,14 @@ main {
 .about-text {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 6px;
   font-size: 16px;
   line-height: 1.6;
   color: #192a3d;
+}
+
+.about-link {
+  margin-top: 22px;
 }
 
 .about-text a {
@@ -239,14 +243,44 @@ main {
 }
 
 .thumbnail-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   width: 350px;
   height: 500px;
   overflow-y: auto;
   padding-right: 10px;
   scrollbar-width: thin;
+}
+
+.thumbnail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.thumbnail-group-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #192a3d;
+  white-space: nowrap;
+}
+
+.thumbnail-group-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #d8dde5;
+}
+
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 10px;
 }
 
 .thumbnail-strip::-webkit-scrollbar {
@@ -321,8 +355,11 @@ main {
   }
 
   .thumbnail-strip {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     height: auto;
+  }
+
+  .thumbnail-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 .entries-work {

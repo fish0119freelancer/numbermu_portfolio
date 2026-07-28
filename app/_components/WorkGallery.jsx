@@ -11,23 +11,25 @@ import Lightbox from './Lightbox';
  * @param {string} title 作品標題（作為 alt）
  * @param {Array<{image: string, caption?: string}|string>} images 詳細圖清單
  */
-export default function WorkGallery({ cover, title, images = [] }) {
+export default function WorkGallery({ cover, full, title, images = [] }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const detail = (images || [])
     .map((img) => (typeof img === 'string' ? { image: img, caption: '' } : img))
     .filter((img) => img?.image);
 
-  // Lightbox 的完整清單：封面在最前，接著所有詳細圖
+  const heroImage = full || cover;
+
+  // Lightbox 的完整清單：大圖（原圖或封面）在最前，接著所有詳細圖
   const lightboxImages = [];
-  if (cover) lightboxImages.push({ src: cover, alt: title || '' });
+  if (heroImage) lightboxImages.push({ src: heroImage, alt: title || '' });
   detail.forEach((img) => lightboxImages.push({ src: img.image, alt: img.caption || title || '' }));
 
-  const coverOffset = cover ? 1 : 0;
+  const coverOffset = heroImage ? 1 : 0;
 
   return (
     <>
-      {cover && (
+      {heroImage && (
         <div className="overflow-hidden rounded-2xl bg-soft/50">
           <button
             type="button"
@@ -35,7 +37,7 @@ export default function WorkGallery({ cover, title, images = [] }) {
             onClick={() => setOpenIndex(0)}
             aria-label={title || '放大圖片'}
           >
-            <img src={cover} alt={title || ''} className="w-full object-contain" />
+            <img src={heroImage} alt={title || ''} className="w-full object-contain" />
           </button>
         </div>
       )}

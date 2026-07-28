@@ -34,7 +34,7 @@ export default function AboutPage() {
             <p key={index}>{paragraph}</p>
           ))}
           {links.map((link) => (
-            <p key={link.href}>
+            <p className="about-link" key={link.href}>
               <a href={link.href} target="_blank" rel="noreferrer noopener">
                 <strong>{link.label}</strong>
               </a>
