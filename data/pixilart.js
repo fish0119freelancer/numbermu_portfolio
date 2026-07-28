@@ -1,5 +1,29 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/5fb0ea434f15af01f64d6538090cfc33ecfd2f442610f0763917ea327453d4e4.png",
+    "slug": "untitled-18",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/111567cc471b86380bcf2831b872d320162c899891916e997df173f2229b0b31.png",
+    "slug": "untitled-17",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/09a0ec1d0cae32a4e76502003d0e5aeca5a75707f36aeed321754249af2c1151.png",
+    "slug": "untitled-16",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/7ca70f28fad61551726fde67fc2d6a5a13cf2d6dc209784ba770f4bc952d062e.gif",
     "slug": "untitled-10",
     "title": "",
