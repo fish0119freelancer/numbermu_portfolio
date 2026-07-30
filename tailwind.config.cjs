@@ -13,8 +13,8 @@ module.exports = {
         soft: '#e1e8ed',
       },
       fontFamily: {
-        display: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
-        body: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['var(--font-lana)', 'var(--font-cubic)', 'sans-serif'],
+        body: ['var(--font-lana)', 'var(--font-cubic)', 'sans-serif'],
       },
     },
   },
