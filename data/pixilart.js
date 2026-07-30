@@ -155,6 +155,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
+    "category": "Others",
     "breakBefore": false
   },
   {
@@ -162,6 +163,7 @@ export const pixilartItems = [
     "slug": "untitled",
     "title": "",
     "caption": "",
-    "href": ""
+    "href": "",
+    "category": "Others"
   }
 ];
