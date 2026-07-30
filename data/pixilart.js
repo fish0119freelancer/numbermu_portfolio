@@ -13,6 +13,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
+    "category": "角色",
     "breakBefore": false
   },
   {
