@@ -1259,8 +1259,9 @@ export default function AdminPage() {
         <GalleryManager
           commitOptions={commitOptions}
           title="Pixilart 首頁作品"
-          description="管理像素插畫與 GIF，保留原有的首頁動畫與排版。"
+          description="管理像素插畫與 GIF。分類欄位會在首頁右側縮圖區以標題分組顯示；留空則歸在最上方的未分類區。"
           dataset={pixilart}
+          fields={['title', 'caption', 'category']}
         />
         <GalleryManager
           commitOptions={commitOptions}
