@@ -1,41 +1,5 @@
 export const pixilartItems = [
   {
-    "image": "/images/content/5fb0ea434f15af01f64d6538090cfc33ecfd2f442610f0763917ea327453d4e4.png",
-    "slug": "untitled-18",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "地圖",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/111567cc471b86380bcf2831b872d320162c899891916e997df173f2229b0b31.png",
-    "slug": "untitled-17",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "地圖",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/09a0ec1d0cae32a4e76502003d0e5aeca5a75707f36aeed321754249af2c1151.png",
-    "slug": "untitled-16",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "地圖",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/7ca70f28fad61551726fde67fc2d6a5a13cf2d6dc209784ba770f4bc952d062e.gif",
-    "slug": "untitled-10",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "物件",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
     "title": "Storm edge/角色Character",
@@ -61,21 +25,21 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
+    "image": "/images/content/7ca70f28fad61551726fde67fc2d6a5a13cf2d6dc209784ba770f4bc952d062e.gif",
+    "slug": "untitled-10",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/b0220dc044f5c21aa07359d26cda28872938318271d071a41a3af94940d25fb8.gif",
     "slug": "Storm-edge門animation",
     "title": "Storm edge/門animation",
     "caption": "",
     "href": "",
-    "category": "物件",
-    "breakBefore": false
-  },
-  {
-    "image": "/images/content/191a6219911c36177eb6bf7fb5086e9cebd3980985a1bebbcdbb063d4858517b.gif",
-    "slug": "untitled-8",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "物件",
+    "category": "Items",
     "breakBefore": false
   },
   {
@@ -84,7 +48,43 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
-    "category": "物件",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/191a6219911c36177eb6bf7fb5086e9cebd3980985a1bebbcdbb063d4858517b.gif",
+    "slug": "untitled-8",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/5fb0ea434f15af01f64d6538090cfc33ecfd2f442610f0763917ea327453d4e4.png",
+    "slug": "untitled-18",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Map",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/111567cc471b86380bcf2831b872d320162c899891916e997df173f2229b0b31.png",
+    "slug": "untitled-17",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Map",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/09a0ec1d0cae32a4e76502003d0e5aeca5a75707f36aeed321754249af2c1151.png",
+    "slug": "untitled-16",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Map",
     "breakBefore": false
   },
   {
@@ -93,7 +93,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "Storm edge/道具icon",
     "href": "",
-    "category": "物件",
+    "category": "Items",
     "breakBefore": false
   },
   {
@@ -102,7 +102,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "Storm edge/道具icon",
     "href": "",
-    "category": "物件",
+    "category": "Items",
     "breakBefore": false
   },
   {
@@ -111,7 +111,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
-    "category": "介面",
+    "category": "UI",
     "breakBefore": false
   },
   {
@@ -120,7 +120,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
-    "category": "介面",
+    "category": "UI",
     "breakBefore": false
   },
   {
@@ -129,7 +129,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
-    "category": "介面",
+    "category": "UI",
     "breakBefore": false
   },
   {
@@ -138,7 +138,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "",
     "href": "",
-    "category": "介面",
+    "category": "UI",
     "breakBefore": false
   },
   {
@@ -147,7 +147,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "Storm edge/寶石動畫animation",
     "href": "",
-    "category": "介面"
+    "category": "UI"
   },
   {
     "image": "/images/content/cd8a8a4eff0a302fde0ddbfa030634a02f68f5df476ad16a9b8b52ae1e6ca35c.gif",
