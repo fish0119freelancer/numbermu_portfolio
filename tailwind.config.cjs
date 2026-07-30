@@ -13,8 +13,9 @@ module.exports = {
         soft: '#e1e8ed',
       },
       fontFamily: {
-        display: ['var(--font-lana)', 'var(--font-cubic)', 'sans-serif'],
-        body: ['var(--font-lana)', 'var(--font-cubic)', 'sans-serif'],
+        display: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        body: ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        pixel: ['var(--font-lana)', 'var(--font-cubic)', 'sans-serif'],
       },
     },
   },
