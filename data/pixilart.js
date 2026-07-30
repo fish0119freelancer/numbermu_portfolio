@@ -41,7 +41,7 @@ export const pixilartItems = [
     "title": "Storm edge/角色Character",
     "caption": "",
     "href": "",
-    "category": "角色"
+    "category": "Characters"
   },
   {
     "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
@@ -49,7 +49,7 @@ export const pixilartItems = [
     "title": "Storm edge/角色Character",
     "caption": "",
     "href": "",
-    "category": "角色"
+    "category": "Characters"
   },
   {
     "image": "/images/content/956b35167b94601230964dad847e00a091dceb14ea301c7c4f95da50a1948c20.gif",
@@ -57,7 +57,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "Storm edge/角色Character",
     "href": "",
-    "category": "角色",
+    "category": "Characters",
     "breakBefore": false
   },
   {
