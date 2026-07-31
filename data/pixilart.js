@@ -52,19 +52,28 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/c724447e8ecc1d18a81c2584d0041c7615deae8856cde1be4042c25f917a6083.gif",
-    "slug": "untitled-23",
+    "image": "/images/content/ba284837e0814d342abac90bf7731ac1f2a639f4c15189b988102514a3294f2f.gif",
+    "slug": "untitled-22",
     "title": "",
-    "caption": "",
+    "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
     "href": "",
     "category": "Items",
     "breakBefore": false
   },
   {
-    "image": "/images/content/ba284837e0814d342abac90bf7731ac1f2a639f4c15189b988102514a3294f2f.gif",
-    "slug": "untitled-22",
+    "image": "/images/content/2ff81e82b2dc79f4641045f7709032c4def9c9ea606ecf9028dfd1906717d3c9.gif",
+    "slug": "untitled-24",
     "title": "",
-    "caption": "",
+    "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/c724447e8ecc1d18a81c2584d0041c7615deae8856cde1be4042c25f917a6083.gif",
+    "slug": "untitled-23",
+    "title": "",
+    "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
     "href": "",
     "category": "Items",
     "breakBefore": false
