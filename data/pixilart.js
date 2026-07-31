@@ -48,7 +48,7 @@ export const pixilartItems = [
     "title": "",
     "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
     "href": "",
-    "category": "",
+    "category": "Items",
     "breakBefore": false
   },
   {
