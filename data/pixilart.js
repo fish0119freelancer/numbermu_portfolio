@@ -1,5 +1,14 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/a721ddb403a99f992bec19e08063689572859935f9fe48d3dab9117eef0d204f.gif",
+    "slug": "untitled-26",
+    "title": "",
+    "caption": "Storm edge風暴馭使/Character",
+    "href": "",
+    "category": "Characters",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
     "slug": "untitled-4",
     "title": "",
