@@ -111,7 +111,21 @@ export const workItems = [
     "image": "/images/work/構音好好玩.jpg",
     "slug": "articulation-fun",
     "title": "構音好好玩",
-    "caption": "互動式語言學習教材的插畫與版面設計。"
+    "caption": "互動式語言學習教材的插畫設計。",
+    "images": [
+      {
+        "image": "/images/content/34e9740e42d7baa45abdaafa7faf7340f2e7804fcd442b7039133e900d8d227c.png",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/8133d416a14d60e47ae7a6b44f417a8ee69cf0ec8728ebcb4a2ccffa1f2ac7f7.jpg",
+        "caption": ""
+      },
+      {
+        "image": "/images/content/3f7387ad64e948fb92c08e1a62d15289757863d83731a8592beab6c8fdc76a8c.jpg",
+        "caption": ""
+      }
+    ]
   },
   {
     "image": "/images/work/火花4.png",
