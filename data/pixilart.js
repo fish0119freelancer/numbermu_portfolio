@@ -61,6 +61,15 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
+    "image": "/images/content/f49ca0aca379bab46e20ab86d95c130a2c7bc8c4d3341715767891ff01e833f1.gif",
+    "slug": "untitled-24",
+    "title": "",
+    "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/c724447e8ecc1d18a81c2584d0041c7615deae8856cde1be4042c25f917a6083.gif",
     "slug": "untitled-23",
     "title": "",
@@ -182,6 +191,15 @@ export const pixilartItems = [
     "slug": "untitled-14",
     "title": "",
     "caption": "Storm edge風暴馭使/UI",
+    "href": "",
+    "category": "UI",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/ca7bdba8116738b6785a049df55496b73056c8fb5825c1762dff6af70ec0882b.jpg",
+    "slug": "untitled-25",
+    "title": "",
+    "caption": "",
     "href": "",
     "category": "UI",
     "breakBefore": false
