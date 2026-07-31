@@ -61,6 +61,15 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
+    "image": "/images/content/e58f9e399df3f1f08501ed6c1e3b9e53a90016ba1da9b6c4f4af63cdf57451d1.gif",
+    "slug": "untitled-23",
+    "title": "",
+    "caption": "Succubus Successor: Delilah's Juicy Journey\n魅魔繼承者：黛莉菈的淫欲冒險/Weapon",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/7ca70f28fad61551726fde67fc2d6a5a13cf2d6dc209784ba770f4bc952d062e.gif",
     "slug": "untitled-10",
     "title": "",
