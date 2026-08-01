@@ -196,15 +196,6 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/c369d4c79cdb30046692630c78a3bf2431c781c7552beaf03dd5288410d119fc.gif",
-    "slug": "untitled-12",
-    "title": "",
-    "caption": "Storm edge風暴馭使/UI",
-    "href": "",
-    "category": "UI",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/ca4f51d566b1cb5aa9efc37d65115fa02b98667378b52a09609cdb8baa3b15cc.png",
     "slug": "untitled-14",
     "title": "",
@@ -217,7 +208,25 @@ export const pixilartItems = [
     "image": "/images/content/ca7bdba8116738b6785a049df55496b73056c8fb5825c1762dff6af70ec0882b.jpg",
     "slug": "untitled-25",
     "title": "",
-    "caption": "",
+    "caption": "Storm edge風暴馭使/UI",
+    "href": "",
+    "category": "UI",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/c369d4c79cdb30046692630c78a3bf2431c781c7552beaf03dd5288410d119fc.gif",
+    "slug": "untitled-12",
+    "title": "",
+    "caption": "Storm edge風暴馭使/UI",
+    "href": "",
+    "category": "UI",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/2865d184ab7845e81ae61e3a5e4649440dbb99b264cd0c24113ed084f3112705.gif",
+    "slug": "untitled-29",
+    "title": "",
+    "caption": "Storm edge風暴馭使/UI ａnimation",
     "href": "",
     "category": "UI",
     "breakBefore": false
@@ -226,7 +235,7 @@ export const pixilartItems = [
     "image": "/images/content/0b8272adc43f844c8f7f9e2aeca523dac7569d3eb4000ff9577da9990e6e7ac1.gif",
     "slug": "untitled-26",
     "title": "",
-    "caption": "",
+    "caption": "Storm edge風暴馭使/UI ａnimation",
     "href": "",
     "category": "UI",
     "breakBefore": false
