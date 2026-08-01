@@ -223,7 +223,7 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/c136b606a9e67816a05bc698d8c643168bf81a9d579821c32d6510ad5a3769bc.gif",
+    "image": "/images/content/2865d184ab7845e81ae61e3a5e4649440dbb99b264cd0c24113ed084f3112705.gif",
     "slug": "untitled-29",
     "title": "",
     "caption": "",
