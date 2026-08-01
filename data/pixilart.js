@@ -1,15 +1,33 @@
 export const pixilartItems = [
   {
-    "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
-    "slug": "untitled-4",
+    "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
+    "slug": "untitled-3",
     "title": "",
     "caption": "Storm edge風暴馭使/Character",
     "href": "",
     "category": "Characters"
   },
   {
-    "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
-    "slug": "untitled-3",
+    "image": "/images/content/f6b7fdc69a350657a9753ca9a04866dda75c9f00394b0cc542a749257928eef9.gif",
+    "slug": "untitled-28",
+    "title": "",
+    "caption": "Storm edge風暴馭使/Character",
+    "href": "",
+    "category": "Characters",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/9cd6ec02a53ddc2b9a0a8841b3941a04817593c76f4da75a050f4c8e0117468c.gif",
+    "slug": "untitled-27",
+    "title": "",
+    "caption": "Storm edge風暴馭使/Character",
+    "href": "",
+    "category": "Characters",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/988266e49f4c2aea32cff0d0b1be700269043fc5ec8fab897231a12f2faa9b2a.gif",
+    "slug": "untitled-4",
     "title": "",
     "caption": "Storm edge風暴馭使/Character",
     "href": "",
