@@ -223,15 +223,6 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/2865d184ab7845e81ae61e3a5e4649440dbb99b264cd0c24113ed084f3112705.gif",
-    "slug": "untitled-29",
-    "title": "",
-    "caption": "Storm edge風暴馭使/UI ａnimation",
-    "href": "",
-    "category": "UI",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/0b8272adc43f844c8f7f9e2aeca523dac7569d3eb4000ff9577da9990e6e7ac1.gif",
     "slug": "untitled-26",
     "title": "",
