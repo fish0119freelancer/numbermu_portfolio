@@ -9,6 +9,7 @@ import {
   IMAGE_ACCEPT,
   validateImageFile,
   waitForDeployment,
+  wouldExceedSaveImageTotal,
 } from '../../lib/admin-client.mjs';
 import { pixilartItems as defaultPixilart } from '../../data/pixilart';
 import { artItems as defaultArt } from '../../data/art';
@@ -49,6 +50,16 @@ const reportSaveOutcome = async (result, setFeedback) => {
   );
 };
 
+// 存檔失敗時最關鍵的一句話：畫面沒騙人，但東西還沒進網站。
+const SAVE_ERROR_HINT = {
+  too_large:
+    '畫面上的編輯都還在，但這次沒有存進網站。請移除或替換部分新上傳的圖片後再按一次「套用變更」，也可以選「捨棄未儲存變更」回到已儲存的內容。',
+  conflict:
+    '畫面上的編輯都還在，但這次沒有存進網站。GitHub 上已有更新的版本，請先按「重新載入 GitHub」取得最新版再儲存。',
+  generic:
+    '畫面上的編輯都還在，但這次沒有存進網站。可以再按一次「套用變更」重試。',
+};
+
 const slugify = (text) => {
   const cleaned = (text || '')
     .trim()
@@ -72,6 +83,7 @@ function GalleryManager({
   const [newItem, setNewItem] = useState({ image: '', title: '', slug: '', caption: '', href: '', category: '' });
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [saveError, setSaveError] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [customMode, setCustomMode] = useState(false);
@@ -129,6 +141,11 @@ function GalleryManager({
   const replaceImage = async (index, file) => {
     try {
       const dataUrl = await readImageFile(file);
+      const check = wouldExceedSaveImageTotal(draft, dataUrl, draft[index]?.image);
+      if (!check.ok) {
+        setFeedback({ type: 'error', message: check.message });
+        return;
+      }
       updateField(index, 'image', dataUrl);
     } catch (error) {
       setFeedback({ type: 'error', message: error.message });
@@ -224,6 +241,11 @@ function GalleryManager({
   const handleItemImageFile = async (index, file) => {
     try {
       const dataUrl = await readImageFile(file);
+      const check = wouldExceedSaveImageTotal(draft, dataUrl);
+      if (!check.ok) {
+        setFeedback({ type: 'error', message: check.message });
+        return;
+      }
       addItemImage(index, dataUrl);
     } catch (error) {
       setFeedback({ type: 'error', message: error.message });
@@ -248,11 +270,17 @@ function GalleryManager({
     setFeedback({ type: 'info', message: 'Saving changes...' });
     try {
       const result = await dataset.setItems(draft, commitOptions);
+      setSaveError(null);
       await reportSaveOutcome(result, setFeedback);
     } catch (error) {
+      const kind =
+        error?.code === 'payload_too_large' ? 'too_large'
+        : error?.isConflict ? 'conflict'
+        : 'generic';
+      setSaveError({ message: error?.message || '更新失敗，請稍後再試。', kind });
       setFeedback({
         type: 'error',
-        message: error?.message || 'Update failed, please try again later.',
+        message: error?.message || '更新失敗，請稍後再試。',
         action: error?.isConflict ? 'reload' : undefined,
       });
     } finally {
@@ -262,6 +290,7 @@ function GalleryManager({
 
   const resetDraft = () => {
     setDraft(dataset.items);
+    setSaveError(null);
   };
 
   const resetToDefault = () => {
@@ -290,6 +319,11 @@ function GalleryManager({
   const handleNewItemFile = async (file) => {
     try {
       const dataUrl = await readImageFile(file);
+      const check = wouldExceedSaveImageTotal(draft, dataUrl);
+      if (!check.ok) {
+        setFeedback({ type: 'error', message: check.message });
+        return;
+      }
       setNewItem((prev) => ({ ...prev, image: dataUrl }));
     } catch (error) {
       setFeedback({ type: 'error', message: error.message });
@@ -401,6 +435,35 @@ function GalleryManager({
           )}
         </div>
       </div>
+
+      {(hasChanges || saveError) && (
+        <div className={`mt-4 flex flex-col gap-2 rounded-xl border px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between ${
+          saveError
+            ? 'border-red-300 bg-red-50 text-red-800'
+            : 'border-amber-300 bg-amber-50 text-amber-800'
+        }`}>
+          <span>
+            {saveError ? (
+              <>
+                <span className="block font-semibold">{saveError.message}</span>
+                <span className="mt-1 block opacity-90">
+                  {SAVE_ERROR_HINT[saveError.kind] || SAVE_ERROR_HINT.generic}
+                </span>
+              </>
+            ) : (
+              '畫面上有尚未儲存的變更，還沒同步到網站。'
+            )}
+          </span>
+          <button
+            type="button"
+            onClick={() => { resetDraft(); setSaveError(null); setFeedback(null); }}
+            disabled={saving}
+            className="shrink-0 rounded-full border border-current px-4 py-1.5 text-xs font-semibold tracking-[0.2em] transition hover:bg-white/60 disabled:opacity-50"
+          >
+            捨棄未儲存變更
+          </button>
+        </div>
+      )}
 
       <div className="mt-6 space-y-6">
         {draft.map((item, index) => (
@@ -830,6 +893,7 @@ function ProfileEditor({ dataset, commitOptions }) {
   const [linkDraft, setLinkDraft] = useState(dataset.items?.links || []);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [saveError, setSaveError] = useState(null);
   const preserveDraftOnNextRemote = useRef(false);
 
   useEffect(() => {
@@ -879,11 +943,17 @@ function ProfileEditor({ dataset, commitOptions }) {
     setFeedback({ type: 'info', message: 'Saving profile...' });
     try {
       const result = await dataset.setItems(next, commitOptions);
+      setSaveError(null);
       await reportSaveOutcome(result, setFeedback);
     } catch (error) {
+      const kind =
+        error?.code === 'payload_too_large' ? 'too_large'
+        : error?.isConflict ? 'conflict'
+        : 'generic';
+      setSaveError({ message: error?.message || '更新失敗，請稍後再試。', kind });
       setFeedback({
         type: 'error',
-        message: error?.message || 'Update failed, please try again later.',
+        message: error?.message || '更新失敗，請稍後再試。',
         action: error?.isConflict ? 'reload' : undefined,
       });
     } finally {
@@ -894,6 +964,7 @@ function ProfileEditor({ dataset, commitOptions }) {
   const resetDraft = () => {
     setDraft(dataset.items);
     setLinkDraft(dataset.items?.links || []);
+    setSaveError(null);
   };
 
   const resetToDefault = () => {
@@ -924,6 +995,11 @@ function ProfileEditor({ dataset, commitOptions }) {
   const handleAvatar = async (file) => {
     try {
       const dataUrl = await readImageFile(file);
+      const check = wouldExceedSaveImageTotal({ ...draft, links: linkDraft }, dataUrl, draft?.avatar);
+      if (!check.ok) {
+        setFeedback({ type: 'error', message: check.message });
+        return;
+      }
       updateField('avatar', dataUrl);
     } catch (error) {
       setFeedback({ type: 'error', message: error.message });
@@ -980,6 +1056,35 @@ function ProfileEditor({ dataset, commitOptions }) {
           )}
         </div>
       </div>
+
+      {(hasChanges || saveError) && (
+        <div className={`mt-4 flex flex-col gap-2 rounded-xl border px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between ${
+          saveError
+            ? 'border-red-300 bg-red-50 text-red-800'
+            : 'border-amber-300 bg-amber-50 text-amber-800'
+        }`}>
+          <span>
+            {saveError ? (
+              <>
+                <span className="block font-semibold">{saveError.message}</span>
+                <span className="mt-1 block opacity-90">
+                  {SAVE_ERROR_HINT[saveError.kind] || SAVE_ERROR_HINT.generic}
+                </span>
+              </>
+            ) : (
+              '畫面上有尚未儲存的變更，還沒同步到網站。'
+            )}
+          </span>
+          <button
+            type="button"
+            onClick={() => { resetDraft(); setSaveError(null); setFeedback(null); }}
+            disabled={saving}
+            className="shrink-0 rounded-full border border-current px-4 py-1.5 text-xs font-semibold tracking-[0.2em] transition hover:bg-white/60 disabled:opacity-50"
+          >
+            捨棄未儲存變更
+          </button>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-6 md:grid-cols-[240px,1fr]">
         <label className="flex flex-col gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-accent/70">
