@@ -1,5 +1,14 @@
 export const pixilartItems = [
   {
+    "image": "/images/content/4bdb34c62bc06b967c284e7ce166d40fb52289b2a6f4a8c4cf7221da57f1bd17.png",
+    "slug": "untitled-30",
+    "title": "Peeps",
+    "caption": "",
+    "href": "",
+    "category": "Others",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
     "slug": "untitled-3",
     "title": "",
