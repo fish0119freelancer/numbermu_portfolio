@@ -6,16 +6,5 @@ export const profile = {
   "bio": [
     "Please place your request here"
   ],
-  "links": [
-    {
-      "label": "Itch.io",
-      "href": "https://cksxxbe.itch.io/",
-      "description": "About the game"
-    },
-    {
-      "label": "Instagram",
-      "href": "https://www.instagram.com/cksxxbe/",
-      "description": "sns"
-    }
-  ]
+  "links": []
 };
