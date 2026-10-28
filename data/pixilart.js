@@ -1,14 +1,5 @@
 export const pixilartItems = [
   {
-    "image": "/images/content/d7c381349bff86ed5fc459403b426e9ac141ddcf25e853146394736419e46bae.png",
-    "slug": "untitled-31",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "Items",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/4bdb34c62bc06b967c284e7ce166d40fb52289b2a6f4a8c4cf7221da57f1bd17.png",
     "slug": "untitled-30",
     "title": "Peeps",
@@ -56,6 +47,15 @@ export const pixilartItems = [
     "slug": "untitled-7",
     "title": "",
     "caption": "Storm edge風暴馭使/Character",
+    "href": "",
+    "category": "Characters",
+    "breakBefore": false
+  },
+  {
+    "image": "/images/content/b440860ac1aec58c97418a2b93ae810ffba6cfb866c876979cc79b0c3286985c.gif",
+    "slug": "untitled-31",
+    "title": "",
+    "caption": "",
     "href": "",
     "category": "Characters",
     "breakBefore": false
