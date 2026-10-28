@@ -151,6 +151,15 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
+    "image": "/images/content/d7c381349bff86ed5fc459403b426e9ac141ddcf25e853146394736419e46bae.png",
+    "slug": "untitled-32",
+    "title": "",
+    "caption": "",
+    "href": "",
+    "category": "Items",
+    "breakBefore": false
+  },
+  {
     "image": "/images/content/5fb0ea434f15af01f64d6538090cfc33ecfd2f442610f0763917ea327453d4e4.png",
     "slug": "untitled-18",
     "title": "",
