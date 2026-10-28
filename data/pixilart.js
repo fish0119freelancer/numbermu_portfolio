@@ -9,15 +9,6 @@ export const pixilartItems = [
     "breakBefore": false
   },
   {
-    "image": "/images/content/4539e6c710df07e5750778511aabbedb09672b10207264ecd52d1b95e921d891.gif",
-    "slug": "untitled-31",
-    "title": "",
-    "caption": "",
-    "href": "",
-    "category": "Characters",
-    "breakBefore": false
-  },
-  {
     "image": "/images/content/06da95e8e756df091675f2d04887541d676f328f276102a45c781ab319ec5930.gif",
     "slug": "untitled-3",
     "title": "",
