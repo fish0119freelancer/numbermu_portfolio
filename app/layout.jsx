@@ -1,6 +1,7 @@
 import localFont from 'next/font/local';
 import './globals.css';
 import Header from './_components/Header';
+import ImageProtection from './_components/ImageProtection';
 
 const lanaPixel = localFont({
   src: '../fonts/LanaPixel.ttf',
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="zh-Hant" className={`${lanaPixel.variable} ${cubic.variable}`}>
       <body className="min-h-screen bg-background text-accent flex flex-col">
+        <ImageProtection />
         <Header />
         <main className="flex-1">
           {children}
@@ -31,4 +33,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

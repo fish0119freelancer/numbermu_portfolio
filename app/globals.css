@@ -18,6 +18,16 @@ img {
   @apply block;
 }
 
+html[data-image-protection='enabled'] :is(
+  img,
+  picture,
+  [data-image-protected],
+  [data-image-protection-background]
+) {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
 main {
   @apply flex-1;
 }
@@ -485,4 +495,3 @@ main {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
 }
-
